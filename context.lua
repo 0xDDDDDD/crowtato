@@ -15,7 +15,6 @@ local Render    = require("core.render")
 --local Audio     = require("core.audio")
 --local Animation = require("core.animation")
 --local Tween     = require("core.tween")
---local UI        = require("core.ui")
 
 
 function Context:new()
@@ -30,7 +29,6 @@ function Context:new()
     --c.audio = Audio:new(c)
     --c.animation = Animation:new(c)
     --c.tween = Tween:new(c)
-    --c.ui = UI:new(c)
 
     setmetatable(c, Context)
     Context.instance = c
