@@ -78,12 +78,16 @@ ProgressBar.__index = ProgressBar
 
 function ProgressBar:new(opts)
     local prg = setmetatable({}, ProgressBar)
+
+    prg.datasrc = opts.datasrc
+    prg.datakey = opts.datakey
+
     prg.x = opts.x
     prg.y = opts.y
     prg.w = opts.w
     prg.h = opts.h
+    prg.pad = 5
     prg.val = opts.val
-    prg.prevVal = opts.val --used for tweening?
 
     --TODO: Check to see if I need more than 1 image for this
     prg.img = opts.img
@@ -91,10 +95,16 @@ function ProgressBar:new(opts)
 end
 
 function ProgressBar:update(dt)
-    --TODO: tween and update logic
+
+    local liveValue = self.datasrc[self.datakey]
+    self.val = (self.w / 100) * liveValue
+
 end
 
 function ProgressBar:draw()
+    --the fill needs a custom color/shader
+    love.graphics.rectangle("fill", self.x + self.pad, self.y + self.pad, self.val, self.h)
+    love.graphics.rectangle("line", self.x + self.pad, self.y + self.pad, self.w, self.h)
 end
 
 
@@ -142,29 +152,31 @@ function Counter:draw()
 end
 
 
--- ==== ICON ==== --
-local Icon = {}
-Icon.__index = Icon
+-- ==== DECREE Stack ==== --
+-- Behaves as a container with "slots", key/value pairs
+local Stack = {}
+Stack.__index = Stack
 
-function Icon:new(opts)
-    local ic = setmetatable(ic, Icon)
-    ic.x = opts.x
-    ic.y = opts.y
-    ic.w = opts.w
-    ic.h = opts.h
-    ic.img = opts.img
+function Stack:new(opts)
+    local st = setmetatable(st, Stack)
+    st.x = opts.x
+    st.y = opts.y
+    st.w = opts.w
+    st.h = opts.h
+    st.img = opts.img --decree image
+    st.decrees = {}
 
-    return ic
+    return st
 end
 
-function Icon:update(dt)
+function Stack:update(dt)
 end
 
-function Icon:draw()
+function Stack:draw()
 end
 
 
--- ==== DECREE ==== --
+-- ==== DECREE PICKER ==== --
 --Different from icon because it will have its own shader
 local Decree = {}
 Decree.__index = Decree
@@ -188,7 +200,7 @@ UITypes.textButton = TextButton
 UITypes.imageButton = ImageButton
 UITypes.progressBar = ProgressBar 
 UITypes.counter = Counter 
-UITypes.icon = Icon
+UITypes.stack = Stack
 UITypes.decree = Decree  
 
 return UITypes
