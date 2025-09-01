@@ -148,6 +148,7 @@ function Counter:draw()
     if self.font then
         love.graphics.setFont(self.font)
     end
+    --TODO: add optional title
     love.graphics.printf(self.val, self.x, self.y, self.w, "center")
 end
 
@@ -158,13 +159,17 @@ local Stack = {}
 Stack.__index = Stack
 
 function Stack:new(opts)
-    local st = setmetatable(st, Stack)
-    st.x = opts.x
-    st.y = opts.y
+    local st = setmetatable({}, Stack)
+
+    st.datasrc = opts.datasrc
+    st.datakey = opts.datakey
+
+    st.centx = opts.centx
+    st.centy = opts.centy
     st.w = opts.w
     st.h = opts.h
-    st.img = opts.img --decree image
-    st.decrees = {}
+    st.x = st.centx - (st.w * 0.5)
+    st.y = st.centy - (st.h * 0.5)
 
     return st
 end
@@ -173,6 +178,10 @@ function Stack:update(dt)
 end
 
 function Stack:draw()
+
+    for i, decree in ipairs(self.datasrc[self.datakey]) do
+        love.graphics.rectangle("fill", self.x + (36 * i), self.y, 32, 48)
+    end
 end
 
 

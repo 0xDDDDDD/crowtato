@@ -1,7 +1,42 @@
 local UITypes = require("ui.uitypes")
 
 local ui = {}
-local state = {counter = 0, health = 100}
+local state = {
+    counter = 0, 
+    health = 100,
+    decrees = {
+        {
+            name = "fireatk",
+            tooltip = "adds fire to attack",
+            icon = "assets/img/decrees/test_01.png"
+        },
+        {
+            name = "iceatk",
+            tooltip = "adds ice to attack",
+            icon = "assets/img/decrees/test_02.png"
+        },
+            {
+            name = "double edge",
+            tooltip = "every attack hits twice",
+            icon = "assets/img/decrees/test_03.png"
+        },
+            {
+            name = "move fast",
+            tooltip = "move speed + 20%",
+            icon = "assets/img/decrees/test_04.png"
+        },
+            {
+            name = "iframe",
+            tooltip = "taking hit gives twice as many ice frames",
+            icon = "assets/img/decrees/test_05.png"
+        },
+            {
+            name = "double death",
+            tooltip = "lethal damage has a chance to restore health instead",
+            icon = "assets/img/decrees/test_01.png"
+        }
+    }
+}
 
 function love.load()
 
@@ -31,6 +66,17 @@ function love.load()
         datakey = "counter"
     }
     table.insert(ui, UITypes.counter:new(ctropts))
+
+    --test stack
+    local stopts = {
+        centx = (love.graphics.getWidth() * 0.5),
+        centy = (love.graphics.getHeight() * 0.9),
+        w = 400,
+        h = 32,
+        datasrc = state,
+        datakey = "decrees"
+    }
+    table.insert(ui, UITypes.stack:new(stopts))
 end
 
 function love.keypressed(key)
