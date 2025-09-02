@@ -89,8 +89,9 @@ function ProgressBar:new(opts)
     prg.pad = 5
     prg.val = opts.val
 
-    --TODO: Check to see if I need more than 1 image for this
-    prg.img = opts.img
+    prg.crtThreshold = opts.crtThreshold or 0
+    prg.crtCol = opts.crtCol or nil
+    
     return prg
 end
 
@@ -102,7 +103,10 @@ function ProgressBar:update(dt)
 end
 
 function ProgressBar:draw()
-    --the fill needs a custom color/shader
+
+    if self.crtCol and self.datasrc[self.datakey] <= self.crtThreshold then
+        love.graphics.setColor(self.crtCol)
+    end
     love.graphics.rectangle("fill", self.x + self.pad, self.y + self.pad, self.val, self.h)
     love.graphics.rectangle("line", self.x + self.pad, self.y + self.pad, self.w, self.h)
 end
@@ -124,6 +128,10 @@ function Counter:new(opts)
     ctr.y = opts.y
     ctr.w = opts.w
     ctr.h = opts.h
+
+    ctr.titled = false
+    ctr.title = ""
+
     ctr.val = opts.val
     ctr._accum = opts.val * 1.0
     ctr.nextVal = opts.val
@@ -145,6 +153,7 @@ function Counter:update(dt)
 end
 
 function Counter:draw()
+    love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
     if self.font then
         love.graphics.setFont(self.font)
     end
@@ -171,6 +180,10 @@ function Stack:new(opts)
     st.x = st.centx - (st.w * 0.5)
     st.y = st.centy - (st.h * 0.5)
 
+    st.cardw = 32
+    st.cardh = 48
+    st.pad = 8
+
     return st
 end
 
@@ -178,12 +191,30 @@ function Stack:update(dt)
 end
 
 function Stack:draw()
+    love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
+    local decrees = self.datasrc[self.datakey]
+    local count = #decrees
 
-    for i, decree in ipairs(self.datasrc[self.datakey]) do
-        love.graphics.rectangle("fill", self.x + (36 * i), self.y, 32, 48)
+    local totalWidth = (self.cardw * count) + (self.pad * (count - 1))
+
+    local leftX = self.centx - totalWidth / 2
+    local cardY = self.centy - (self.cardh / 2)
+
+    for i, decree in ipairs(decrees) do
+        local cardX = leftX + (self.cardw + self.pad) * (i - 1)
+
+        love.graphics.rectangle("fill", cardX, cardY, self.cardw, self.cardh)
+
+        local icon = decree.icon
+        if icon then
+            local iw, ih = icon:getWidth(), icon:getHeight()
+            local cx = cardX + self.cardw / 2
+            local cy = cardY + self.cardh / 2
+            local scale = math.min(self.cardw / iw, self.cardh / ih)
+            love.graphics.draw(icon, cx, cy, 0, scale, scale, iw / 2, ih / 2)
+        end
     end
 end
-
 
 -- ==== DECREE PICKER ==== --
 --Different from icon because it will have its own shader

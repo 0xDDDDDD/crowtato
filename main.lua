@@ -4,7 +4,13 @@ local ui = {}
 local state = {
     counter = 0, 
     health = 100,
-    decrees = {
+    decrees = {}
+}
+
+function love.load()
+
+    --Set up decrees
+        state.decrees = {
         {
             name = "fireatk",
             tooltip = "adds fire to attack",
@@ -36,9 +42,10 @@ local state = {
             icon = "assets/img/decrees/test_01.png"
         }
     }
-}
 
-function love.load()
+    for _, decree in ipairs(state.decrees) do
+        decree.icon = love.graphics.newImage(decree.icon)
+    end
 
     --test healthbar
     local hbopts = {
@@ -48,6 +55,8 @@ function love.load()
         h = 30,
         val = 100,
         col = {0.9, 0.0, 0.0},
+        crtCol = {0.9, 0.1, 0.1, 1.0},
+        crtThreshold = 20,
         datasrc = state,
         datakey = "health"        
     }
@@ -72,7 +81,7 @@ function love.load()
         centx = (love.graphics.getWidth() * 0.5),
         centy = (love.graphics.getHeight() * 0.9),
         w = 400,
-        h = 32,
+        h = 64,
         datasrc = state,
         datakey = "decrees"
     }
@@ -86,9 +95,14 @@ function love.keypressed(key)
         state.counter = state.counter + 10
     elseif key == "h" and state.health >= 10 then
         state.health = state.health - 10
+    elseif key == "d" then
+        local d = {}
+        d.name = "firebrand"
+        d.tooltip = "returns damage with fire damage"
+        d.icon = love.graphics.newImage("assets/img/decrees/test_01.png")
+
+        table.insert(state.decrees, d)
     end
-    print("\nstate counter = ", state.counter)
-    print("\nhealth = ", state.health)
 end
 
 function love.update(dt)

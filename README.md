@@ -2,27 +2,25 @@
 gamejam for Callunas birthday
 
 
-## To-do list August
-- Add UI types
-- Get menu scene opening, play button should kill game for now
-- Art for main menu button
-- Calluc face lineart + shader (animal well style glow) for main menu background
+## Sept 5th Target
+- Fully functioning UI Elements
+- Fully functioning decree picker (Current harness, disable all other input, trigger this with "d" to add new decrees)
+- Add UI Module
+- Get tooltips working
 
-<br/><br/>
+## Sept 12th Target
+- Move current harness into "Test scene"
+- Get test scene loading up with Scene manager
+- Create a more organized Menu scene and get it booting with Scene manager
+- Create a game scene skeleton. Maybe get UI booting with it. 
 
-## To-do list Sept 1st - 10th
-- Game scene loading
-- Game scene hud completed
-- Game scene character running around
-- Game scene enemy spawner
-- Game scene enemy AI (basic)
-- Anim/Tween system basics
+## Sept 17th Target (functional pushes only from this point)
+- Get Menu scene buttons working (Play/Exit only)
+- Get Game timer running
+- Create Animation object, Test with "Player" object
+- Create enemy spawner that spawns 5 enemies. Does nothing more. 
 
-<br/><br/>
-
-## To-do list sept 11th - 20th
-- Decree picker game state
-- Decree UI
-- Decree Behaviour
-- End game stats sheet
-- Finish Audio
+## Sept 21st Target
+- Separate Combat loop, pre-wave timer and decree picker states
+- Implement enemy collision detect and attack logic
+- Implement decree pick after 100 points. 
