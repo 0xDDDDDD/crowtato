@@ -3,8 +3,8 @@ gamejam for Callunas birthday
 
 
 ## Sept 5th Target
-- Fully functioning UI Elements
-- Fully functioning decree picker (Current harness, disable all other input, trigger this with "d" to add new decrees)
+- ~~Fully functioning UI Elements~~
+- ~~Fully functioning decree picker (Current harness, disable all other input, trigger this with "d" to add new decrees)~~
 - Add UI Module
 - Get tooltips working
 

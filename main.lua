@@ -26,17 +26,17 @@ function love.load()
             {
             name = "Devourer",
             tooltip = "every attack hits twice",
-            icon = "assets/img/decrees/03_devourer.png"
+            icon = "assets/img/decrees/05_devourer.png"
         },
             {
             name = "Magnificent Envy",
             tooltip = "move speed + 20%",
-            icon = "assets/img/decrees/04_magenvy.png"
+            icon = "assets/img/decrees/06_magenvy.png"
         },
             {
             name = "Pit Stop",
             tooltip = "taking hit gives twice as many ice frames",
-            icon = "assets/img/decrees/05_pitstop.png"
+            icon = "assets/img/decrees/07_pitstop.png"
         }
     }
 
@@ -109,7 +109,7 @@ function love.load()
         choice = {},
 
         font = "assets/fonts/Cartoon.ttf",
-        tsize = 30,
+        tsize = 25,
         size = 20,
 
         datasrc = state,
@@ -132,6 +132,12 @@ function love.keypressed(key)
     end
 end
 
+function love.mousepressed(x, y, button, istouch, presses)
+    if button == 1 then
+        table.insert(state.owned_decrees, ui.decreepicker:select(x, y))
+    end
+end
+
 function love.update(dt)
     for i, item in pairs(ui) do
         item:update(dt)
@@ -149,7 +155,6 @@ function pick_decrees(options)
 end
 
 function get_random_decrees()
-    print("\nState.decrees = ", state.decrees)
 
     local choices = {unpack(state.decrees)}
 

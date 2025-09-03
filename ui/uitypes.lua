@@ -163,7 +163,7 @@ function Counter:draw()
         love.graphics.printf(self.title, self.x, self.y - 20, self.w, "center")
     end
     if self.font then
-        love.graphics.setFont(self.font, 50)
+        love.graphics.setFont(self.font)
     end
     love.graphics.printf(self.val, self.x, self.y, self.w, "center")
 end
@@ -240,7 +240,7 @@ function Decree:new(opts)
     dc.h = opts.h
     dc.visible = false
 
-    dc.options = {} --table as a "cache" for the items
+    dc.options = {}
     dc.columnw = opts.w / 3
     dc.cardw = 64 * 2
     dc.cardh = 96 * 2
@@ -251,7 +251,7 @@ end
 function Decree:show(options)
 
     self.options = options
-
+    self.displayList = self:buildDisplayList(options)
     self.visible = true
 end
 
@@ -259,8 +259,39 @@ function Decree:hide()
     self.visible = false
 end
 
-function Decree:select() --base on context.mouse.pos
-    
+function Decree:select(mx, my)
+    if not self.visible then return nil end
+
+    for i, item in ipairs(self.displayList) do
+        local hb = item.hitbox
+        if mx >= hb.l and mx <= hb.r and my >= hb.t and my <= hb.b then
+            self:hide()
+            return item
+        end
+    end
+    return nil
+end
+
+function Decree:buildDisplayList(options)
+    local list = {}
+    local numCols = 3
+    local colSpacing = self.w / numCols
+
+    for i, opt in ipairs(options) do
+
+        local cx = self.x + (colSpacing * (i - 0.5))
+        local imgX = cx - (self.cardw / 2)
+        local imgY = self.y + 20
+
+        list[i] = {
+            icon      = opt.icon,
+            name      = opt.name,
+            tooltip   = opt.tooltip,
+            hitbox    = {l = imgX, r = imgX + self.cardw, t = imgY, b = imgY + self.cardh}
+        }
+    end
+
+    return list
 end
 
 function Decree:update(dt)
@@ -275,28 +306,25 @@ function Decree:draw()
 
     love.graphics.setColor(1, 1, 1, 1)
 
-    local numCols = 3
-    local colSpacing = self.w / numCols
-
-    for i, item in ipairs(self.options) do
-
-        local cx = self.x + (colSpacing * (i - 0.5))
-
-        local imgX = cx - (self.cardw / 2)
-        local imgY = self.y + 20
-        love.graphics.draw(item.icon, imgX, imgY, 0,
+    for _, item in ipairs(self.displayList) do
+        -- Draw icon
+        love.graphics.draw(item.icon,
+            item.hitbox.l,
+            item.hitbox.t,
+            0,
             self.cardw / item.icon:getWidth(),
-            self.cardh / item.icon:getHeight())
+            self.cardh / item.icon:getHeight()
+        )
 
-        -- title
+        -- Title
         love.graphics.setFont(self.titleFont)
-        local titleY = imgY + self.cardh + 5
-        love.graphics.printf(item.name, cx - colSpacing/2, titleY, colSpacing, "center")
+        local titleY = item.hitbox.t + self.cardh + 5
+        love.graphics.printf(item.name, item.hitbox.l, titleY, (self.cardw * 1.1), "center")
 
-        -- description
+        -- Description
         love.graphics.setFont(self.font)
         local descY = titleY + self.font:getHeight() + 50
-        love.graphics.printf(item.tooltip, cx - colSpacing/2, descY, colSpacing, "center")
+        love.graphics.printf(item.tooltip, item.hitbox.l, descY, self.cardw, "center")
     end
 end
 
