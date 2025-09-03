@@ -1,5 +1,4 @@
-local UITypes = {}
---datasrc/datakey are expected to be a table and key within it. 
+local UITypes = {} 
 
 -- ==== BUTTON ==== --
 local TextButton = {}
@@ -67,7 +66,7 @@ end
 
 --TODO: replace this with image logic later
 function ImageButton:draw()
-    love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
+    love.graphics.draw(self.image, self.x, self.y, self.w, self.h)
     love.graphics.print(self.text, self.x + (self.w * 0.25), self.y + (self.h * 0.25))
 end
 
@@ -78,7 +77,6 @@ ProgressBar.__index = ProgressBar
 
 function ProgressBar:new(opts)
     local prg = setmetatable({}, ProgressBar)
-
     prg.datasrc = opts.datasrc
     prg.datakey = opts.datakey
 
@@ -86,23 +84,33 @@ function ProgressBar:new(opts)
     prg.y = opts.y
     prg.w = opts.w
     prg.h = opts.h
-    prg.pad = 5
-    prg.val = opts.val
+    prg.pad = opts.pad or 5
+    prg.val = opts.val or 0
 
-    prg.col = opts.col or {1.0, 1.0, 1.0, 1.0}
+    prg.col = opts.col or {1, 1, 1, 1}
 
     prg.crtThreshold = opts.crtThreshold or 0
     prg.crtCol = opts.crtCol or nil
-    
+
+    prg.min = opts.min or 0
+    prg.max = opts.max or 100
+
     return prg
 end
 
 function ProgressBar:update(dt)
+    local liveValue = self.datasrc[self.datakey] or 0
+    local range = self.max - self.min
+    local normalized = 0
 
-    local liveValue = self.datasrc[self.datakey]
-    self.val = (self.w / 100) * liveValue
+    if range > 0 then
+        normalized = (liveValue - self.min) / range
+        normalized = math.max(0, math.min(1, normalized))
+    end
 
+    self.val = self.w * normalized
 end
+
 
 function ProgressBar:draw()
 
@@ -300,14 +308,13 @@ end
 function Decree:draw()
     if not self.visible then return end
 
-    -- background
     love.graphics.setColor(0.0, 0.9, 0.2, 0.5)
     love.graphics.rectangle("fill", self.x, self.y, self.w, self.h, 20, 20)
 
     love.graphics.setColor(1, 1, 1, 1)
 
     for _, item in ipairs(self.displayList) do
-        -- Draw icon
+
         love.graphics.draw(item.icon,
             item.hitbox.l,
             item.hitbox.t,
@@ -316,12 +323,10 @@ function Decree:draw()
             self.cardh / item.icon:getHeight()
         )
 
-        -- Title
         love.graphics.setFont(self.titleFont)
         local titleY = item.hitbox.t + self.cardh + 5
         love.graphics.printf(item.name, item.hitbox.l, titleY, (self.cardw * 1.1), "center")
 
-        -- Description
         love.graphics.setFont(self.font)
         local descY = titleY + self.font:getHeight() + 50
         love.graphics.printf(item.tooltip, item.hitbox.l, descY, self.cardw, "center")
