@@ -89,6 +89,8 @@ function ProgressBar:new(opts)
     prg.pad = 5
     prg.val = opts.val
 
+    prg.col = opts.col or {1.0, 1.0, 1.0, 1.0}
+
     prg.crtThreshold = opts.crtThreshold or 0
     prg.crtCol = opts.crtCol or nil
     
@@ -106,6 +108,8 @@ function ProgressBar:draw()
 
     if self.crtCol and self.datasrc[self.datakey] <= self.crtThreshold then
         love.graphics.setColor(self.crtCol)
+    else
+        love.graphics.setColor(self.col)
     end
     love.graphics.rectangle("fill", self.x + self.pad, self.y + self.pad, self.val, self.h)
     love.graphics.rectangle("line", self.x + self.pad, self.y + self.pad, self.w, self.h)
@@ -123,14 +127,14 @@ function Counter:new(opts)
     ctr.datakey = opts.datakey
 
     ctr.font = love.graphics.newFont(opts.font, opts.size)
+    ctr.titleFont = love.graphics.newFont(opts.font, (opts.size * 0.5))
 
-    ctr.x = opts.x
+    ctr.x = opts.x - (opts.w * 0.5)
     ctr.y = opts.y
     ctr.w = opts.w
     ctr.h = opts.h
 
-    ctr.titled = false
-    ctr.title = ""
+    ctr.title = opts.title or nil
 
     ctr.val = opts.val
     ctr._accum = opts.val * 1.0
@@ -154,10 +158,13 @@ end
 
 function Counter:draw()
     love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
-    if self.font then
-        love.graphics.setFont(self.font)
+    if self.title then
+        love.graphics.setFont(self.titleFont)
+        love.graphics.printf(self.title, self.x, self.y - 20, self.w, "center")
     end
-    --TODO: add optional title
+    if self.font then
+        love.graphics.setFont(self.font, 50)
+    end
     love.graphics.printf(self.val, self.x, self.y, self.w, "center")
 end
 
@@ -180,8 +187,8 @@ function Stack:new(opts)
     st.x = st.centx - (st.w * 0.5)
     st.y = st.centy - (st.h * 0.5)
 
-    st.cardw = 32
-    st.cardh = 48
+    st.cardw = 64
+    st.cardh = 96
     st.pad = 8
 
     return st
@@ -203,8 +210,6 @@ function Stack:draw()
     for i, decree in ipairs(decrees) do
         local cardX = leftX + (self.cardw + self.pad) * (i - 1)
 
-        love.graphics.rectangle("fill", cardX, cardY, self.cardw, self.cardh)
-
         local icon = decree.icon
         if icon then
             local iw, ih = icon:getWidth(), icon:getHeight()
@@ -217,23 +222,82 @@ function Stack:draw()
 end
 
 -- ==== DECREE PICKER ==== --
---Different from icon because it will have its own shader
 local Decree = {}
 Decree.__index = Decree
 
 function Decree:new(opts)
     local dc = setmetatable({}, Decree)
-    dc.x = opts.x
-    dc.y = opts.y
+
+    dc.datasrc = opts.datasrc
+    dc.datakey = opts.datakey
+
+    dc.titleFont = love.graphics.newFont(opts.font, opts.tsize)
+    dc.font = love.graphics.newFont(opts.font, opts.size)
+
+    dc.x = opts.centx - (opts.w * 0.5)
+    dc.y = opts.centy - (opts.h * 0.5)
     dc.w = opts.w
     dc.h = opts.h
+    dc.visible = false
+
+    dc.options = {} --table as a "cache" for the items
+    dc.columnw = opts.w / 3
+    dc.cardw = 64 * 2
+    dc.cardh = 96 * 2
+
     return dc
+end
+
+function Decree:show(options)
+
+    self.options = options
+
+    self.visible = true
+end
+
+function Decree:hide()
+    self.visible = false
+end
+
+function Decree:select() --base on context.mouse.pos
+    
 end
 
 function Decree:update(dt)
 end
 
 function Decree:draw()
+    if not self.visible then return end
+
+    -- background
+    love.graphics.setColor(0.0, 0.9, 0.2, 0.5)
+    love.graphics.rectangle("fill", self.x, self.y, self.w, self.h, 20, 20)
+
+    love.graphics.setColor(1, 1, 1, 1)
+
+    local numCols = 3
+    local colSpacing = self.w / numCols
+
+    for i, item in ipairs(self.options) do
+
+        local cx = self.x + (colSpacing * (i - 0.5))
+
+        local imgX = cx - (self.cardw / 2)
+        local imgY = self.y + 20
+        love.graphics.draw(item.icon, imgX, imgY, 0,
+            self.cardw / item.icon:getWidth(),
+            self.cardh / item.icon:getHeight())
+
+        -- title
+        love.graphics.setFont(self.titleFont)
+        local titleY = imgY + self.cardh + 5
+        love.graphics.printf(item.name, cx - colSpacing/2, titleY, colSpacing, "center")
+
+        -- description
+        love.graphics.setFont(self.font)
+        local descY = titleY + self.font:getHeight() + 50
+        love.graphics.printf(item.tooltip, cx - colSpacing/2, descY, colSpacing, "center")
+    end
 end
 
 UITypes.textButton = TextButton

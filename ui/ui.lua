@@ -1,5 +1,7 @@
 local UITypes = require("ui.uitypes")
 
+-- Simplification layer for creating and managing the UI
+
 local UI = {}
 UI.__index = UI
 
