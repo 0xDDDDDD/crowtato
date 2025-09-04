@@ -211,10 +211,16 @@ function Stack:new(opts)
     st.cardh = 96
     st.pad = 8
 
+    st.collision = {}
+
     return st
 end
 
-function Stack:update(dt)
+function Stack:update(dt) -- Read from the context.input.mouse.xy and display tooltip if collision hit
+end
+
+function Stack:set_collision() --TODO:  set the collision and update each time a decree is added
+
 end
 
 function Stack:draw()

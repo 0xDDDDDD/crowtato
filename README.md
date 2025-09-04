@@ -5,25 +5,30 @@ gamejam for Callunas birthday
 ## Sept 5th Target
 - ~~Fully functioning UI Elements~~
 - ~~Fully functioning decree picker (Current harness, disable all other input, trigger this with "d" to add new decrees)~~
-- Add UI Module
+- ~~Add UI Module~~
 - Get tooltips working
 
 ## Sept 12th Target
-- Move current harness into "Test scene"
-- Get test scene loading up with Scene manager
-- Create a more organized Menu scene and get it booting with Scene manager
-- Create a game scene skeleton. Maybe get UI booting with it. 
+- Create Scene Manager/host (which is more applicable?)
+- Create Scene file, start offloading main.lua UI test harness into it
+- Finish getting entire UI into scene file and decide how a scene file should look
+- Based on the code in the UI manager, set up the input manager
+- Get the input manager connecting to everything else (UI, decree picker, tooltips, WASD, etc)
+- Get main player into the game, able to WASD around (no anim)
+- Get enemy spawner object, use shifting target to spawn enemies randomly and move towards player
+- Iterate over all of the code thus far, clean up, make changes in consideration for timers and anims and so on.
 
-## Sept 17th Target (functional pushes only from this point)
-- Get Menu scene buttons working (Play/Exit only)
-- Get Game timer running
-- Create Animation object, Test with "Player" object
-- Create enemy spawner that spawns 5 enemies. Does nothing more. 
 
-## Sept 21st Target
-- Separate Combat loop, pre-wave timer and decree picker states
-- Implement enemy collision detect and attack logic
-- Implement decree pick after 100 points. 
+# Minor tweaks needed
+- Maybe decree points counter should count downwards? each decree it starts higher, and you need to get it to 0 to get decree at end of wave?
+
+
+# Controls
+- WASD to move around
+- Auto attack
+- hold LMB for active attack? (possible secondary bigger attack w/cooldown?)
+- < and > for volume up and down
+- ESC immediately exits game
 
 
 <br/><br/><br/>

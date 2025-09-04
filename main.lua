@@ -110,7 +110,8 @@ end
 
 function love.mousepressed(x, y, button, istouch, presses)
     if button == 1 then
-        table.insert(state.owned_decrees, ui.decreepicker:select(x, y))
+        local dp = ui:get("decreepicker")
+        table.insert(state.owned_decrees, dp:select(x, y))
     end
 end
 
@@ -124,7 +125,6 @@ end
 
 function pick_decrees(options)
     local dp = ui:get("decreepicker")
-    print(dp)
     dp:show(options)
 end
 
