@@ -13,7 +13,6 @@ gamejam for Callunas birthday
 - Create Scene file, start offloading main.lua UI test harness into it
 - Finish getting entire UI into scene file and decide how a scene file should look
 - Based on the code in the UI manager, set up the input manager
-- Get the input manager connecting to everything else (UI, decree picker, tooltips, WASD, etc)
 - Get main player into the game, able to WASD around (no anim)
 - Get enemy spawner object, use shifting target to spawn enemies randomly and move towards player
 - Iterate over all of the code thus far, clean up, make changes in consideration for timers and anims and so on.

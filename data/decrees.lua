@@ -8,13 +8,13 @@ local decrees = {
         {
             id = 2,
             name = "Snowfall",
-            tooltip = "Enemies move at 30% speed and take 20% more damage for 3 seconds after hit",
+            tooltip = "Enemies move at 30% speed and take 20% more damage for 3 seconds on hit",
             icon = "assets/img/decrees/02_snowfall.png"
         },
         {
             id = 3,
             name = "Calcium",
-            tooltip = "Reduce incoming damage by 25%",
+            tooltip = "Reduce incoming damage by 7% per decree",
             icon = "assets/img/decrees/03_calcium.png"
         },
         {
@@ -46,6 +46,30 @@ local decrees = {
             name = "Stonks",
             tooltip = "5% chance that an enemy gives 10x coins amount",
             icon = "assets/img/decrees/08_stonks.png"
+        },
+        {
+            id = 9,
+            name = "Circular Saw",
+            tooltip = "The more coins required, the faster you attack",
+            icon = "assets/img/decrees/09_circularsaw.png" --TODO
+        },
+        {
+            id = 10,
+            name = "Confetti Regretti",
+            tooltip = "10% chance to teleport to a random point in the map on hit",
+            icon = "assets/img/decrees/10_confettiregretti.png" --TODO
+        },
+        {
+            id = 11,
+            name = "Devils Deal",
+            tooltip = "Survive lethal damage. Consumes this and 2 other random decrees",
+            icon = "assets/img/decrees/11_devilsdeal.png" --TODO
+        },
+        {
+            id = 12,
+            name = "Nice",
+            tooltip = "Waves: Multiples of 6, you move faster. Multiples of 9, enemies do",
+            icon = "assets/img/decrees/12_nice.png" --TODO
         }
     }
 
