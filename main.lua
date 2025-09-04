@@ -1,4 +1,5 @@
 local UITypes = require("ui.uitypes")
+local decrees = require("data.decrees")
 
 local ui = {}
 local state = {
@@ -12,37 +13,7 @@ local state = {
 function love.load()
 
     --Set up decrees
-        state.decrees = {
-        {
-            name = "Full moon",
-            tooltip = "adds fire to attack",
-            icon = "assets/img/decrees/01_fullmoon.png"
-        },
-        {
-            name = "Snowfall",
-            tooltip = "adds ice to attack",
-            icon = "assets/img/decrees/02_snowfall.png"
-        },
-            {
-            name = "Devourer",
-            tooltip = "every attack hits twice",
-            icon = "assets/img/decrees/05_devourer.png"
-        },
-            {
-            name = "Magnificent Envy",
-            tooltip = "move speed + 20%",
-            icon = "assets/img/decrees/06_magenvy.png"
-        },
-            {
-            name = "Pit Stop",
-            tooltip = "taking hit gives twice as many ice frames",
-            icon = "assets/img/decrees/07_pitstop.png"
-        }
-    }
-
-    for _, decree in ipairs(state.decrees) do
-        decree.icon = love.graphics.newImage(decree.icon)
-    end
+        state.decrees = decrees
 
     --test healthbar
     local hbopts = {

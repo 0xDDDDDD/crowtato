@@ -1,4 +1,4 @@
-return {
+local decrees = {
         {
             id = 1,
             name = "Full Moon",
@@ -43,8 +43,14 @@ return {
         },
         {
             id = 8,
-            name = "Golden Touch",
+            name = "Stonks",
             tooltip = "5% chance that an enemy gives 10x coins amount",
-            icon = "assets/img/decrees/08_goldentouch.png"
+            icon = "assets/img/decrees/08_stonks.png"
         }
     }
+
+for _, decree in ipairs (decrees) do
+    decree.icon = love.graphics.newImage(decree.icon)
+end
+
+return decrees
