@@ -1,7 +1,5 @@
 local UITypes = require("ui.uitypes")
 
--- Simplification layer for creating and managing the UI
-
 local UI = {}
 UI.__index = UI
 
@@ -17,15 +15,23 @@ function UI:new(context)
 end
 
 function UI:add(typeName, opts)
-
+    local class = UITypes[typeName]
+    if not class then
+        error("Unknown UI type: " .. tostring(typeName))
+    end
+    table.insert(self.elements, class:new(opts))
 end
 
 function UI:update(dt)
-
+    for i, item in ipairs(self.elements) do
+        item:update(dt)
+    end
 end
 
 function UI:draw()
-
+    for i, item in ipairs(self.elements) do
+        item:draw()
+    end
 end
 
 return UI

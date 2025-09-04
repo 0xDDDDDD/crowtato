@@ -328,8 +328,8 @@ function Decree:draw()
         love.graphics.printf(item.name, item.hitbox.l, titleY, (self.cardw * 1.1), "center")
 
         love.graphics.setFont(self.font)
-        local descY = titleY + self.font:getHeight() + 50
-        love.graphics.printf(item.tooltip, item.hitbox.l, descY, self.cardw, "center")
+        local descY = titleY + self.font:getHeight() + 40
+        love.graphics.printf(item.tooltip, item.hitbox.l, descY, (self.cardw * 1.1), "center")
     end
 end
 
@@ -338,6 +338,6 @@ UITypes.imageButton = ImageButton
 UITypes.progressBar = ProgressBar 
 UITypes.counter = Counter 
 UITypes.stack = Stack
-UITypes.decree = Decree  
+UITypes.decreePicker = Decree  
 
 return UITypes

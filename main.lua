@@ -1,7 +1,8 @@
-local UITypes = require("ui.uitypes")
+local UI = require("ui.ui")
 local decrees = require("data.decrees")
 
-local ui = {}
+local ui = UI:new()
+
 local state = {
     counter = 0,
     wave = 0, 
@@ -28,7 +29,7 @@ function love.load()
         datasrc = state,
         datakey = "health"        
     }
-    ui.healthbar =  UITypes.progressBar:new(hbopts)
+    ui:add("progressBar", hbopts)
 
     --test counter
     local ctropts = {
@@ -42,8 +43,7 @@ function love.load()
         datasrc = state,
         datakey = "counter",
     }
-    ui.counter = UITypes.counter:new(ctropts)
-
+    ui:add("counter", ctropts)
 
     --wave counter
     local wavopts = {
@@ -58,7 +58,7 @@ function love.load()
         datakey = "wave",
         title = "wave"
     }
-    ui.wavecounter = UITypes.counter:new(wavopts)
+    ui:add("counter", wavopts)
 
     --test stack
     local stopts = {
@@ -69,7 +69,7 @@ function love.load()
         datasrc = state,
         datakey = "owned_decrees"
     }
-    ui.decreestack = UITypes.stack:new(stopts)
+    ui:add("stack", stopts)
 
     --Test Decree Picker
     local dpopts = {
@@ -81,12 +81,12 @@ function love.load()
 
         font = "assets/fonts/Cartoon.ttf",
         tsize = 25,
-        size = 20,
+        size = 16,
 
         datasrc = state,
         datakey = "decrees"
     }
-    ui.decreepicker = UITypes.decree:new(dpopts)
+    ui:add("decreePicker", dpopts)
 end
 
 function love.keypressed(key)
@@ -110,15 +110,11 @@ function love.mousepressed(x, y, button, istouch, presses)
 end
 
 function love.update(dt)
-    for i, item in pairs(ui) do
-        item:update(dt)
-    end
+    ui:update(dt)
 end
 
 function love.draw()
-    for i, item in pairs(ui) do
-        item:draw()
-    end
+    ui:draw()
 end
 
 function pick_decrees(options)
