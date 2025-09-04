@@ -22,6 +22,14 @@ function UI:add(typeName, opts)
     table.insert(self.elements, class:new(opts))
 end
 
+function UI:get(id)
+    for i, item in ipairs(self.elements) do
+        if item.id == id then
+            return item
+        end
+    end
+end
+
 function UI:update(dt)
     for i, item in ipairs(self.elements) do
         item:update(dt)

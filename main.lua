@@ -18,6 +18,7 @@ function love.load()
 
     --test healthbar
     local hbopts = {
+        id = "healthbar",
         x = 50,
         y = 50,
         w = 200,
@@ -33,6 +34,7 @@ function love.load()
 
     --test counter
     local ctropts = {
+        id = "points",
         x = 1200,
         y = 50,
         w = 200,
@@ -47,6 +49,7 @@ function love.load()
 
     --wave counter
     local wavopts = {
+        id = "wavecounter",
         x = love.graphics.getWidth() * 0.5,
         y = 50,
         w = 200,
@@ -62,6 +65,7 @@ function love.load()
 
     --test stack
     local stopts = {
+        id = "decreestack",
         centx = (love.graphics.getWidth() * 0.5),
         centy = (love.graphics.getHeight() * 0.9),
         w = 400,
@@ -73,6 +77,7 @@ function love.load()
 
     --Test Decree Picker
     local dpopts = {
+        id = "decreepicker",
         centx = (love.graphics.getWidth() * 0.5),
         centy = (love.graphics.getHeight() * 0.5),
         w = 600,
@@ -118,7 +123,9 @@ function love.draw()
 end
 
 function pick_decrees(options)
-    ui.decreepicker:show(options)
+    local dp = ui:get("decreepicker")
+    print(dp)
+    dp:show(options)
 end
 
 function get_random_decrees()

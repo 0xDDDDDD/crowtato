@@ -6,6 +6,9 @@ TextButton.__index = TextButton
 
 function TextButton:new(opts)
     local btn = setmetatable({}, TextButton)
+
+    btn.id = opts.id
+
     btn.x = opts.x
     btn.y = opts.y
     btn.w = opts.w
@@ -41,6 +44,9 @@ ImageButton.__index = ImageButton
 
 function ImageButton:new(opts)
     local btn = setmetatable({}, ImageButton)
+
+    btn.id = opts.id
+
     btn.x = opts.x
     btn.y = opts.y
     btn.w = opts.w
@@ -79,6 +85,8 @@ function ProgressBar:new(opts)
     local prg = setmetatable({}, ProgressBar)
     prg.datasrc = opts.datasrc
     prg.datakey = opts.datakey
+
+    prg.id = opts.id
 
     prg.x = opts.x
     prg.y = opts.y
@@ -134,6 +142,8 @@ function Counter:new(opts)
     ctr.datasrc = opts.datasrc
     ctr.datakey = opts.datakey
 
+    ctr.id = opts.id
+
     ctr.font = love.graphics.newFont(opts.font, opts.size)
     ctr.titleFont = love.graphics.newFont(opts.font, (opts.size * 0.5))
 
@@ -188,6 +198,8 @@ function Stack:new(opts)
     st.datasrc = opts.datasrc
     st.datakey = opts.datakey
 
+    st.id = opts.id
+
     st.centx = opts.centx
     st.centy = opts.centy
     st.w = opts.w
@@ -239,6 +251,8 @@ function Decree:new(opts)
     dc.datasrc = opts.datasrc
     dc.datakey = opts.datakey
 
+    dc.id = opts.id
+
     dc.titleFont = love.graphics.newFont(opts.font, opts.tsize)
     dc.font = love.graphics.newFont(opts.font, opts.size)
 
@@ -257,7 +271,6 @@ function Decree:new(opts)
 end
 
 function Decree:show(options)
-
     self.options = options
     self.displayList = self:buildDisplayList(options)
     self.visible = true
