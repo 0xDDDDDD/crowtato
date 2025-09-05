@@ -51,25 +51,25 @@ local decrees = {
             id = 9,
             name = "Circular Saw",
             tooltip = "The more coins required, the faster you attack",
-            icon = "assets/img/decrees/09_circularsaw.png" --TODO
+            icon = "assets/img/decrees/09_circularsaw.png"
         },
         {
             id = 10,
             name = "Confetti Regretti",
             tooltip = "10% chance to teleport to a random point in the map on hit",
-            icon = "assets/img/decrees/10_confettiregretti.png" --TODO
+            icon = "assets/img/decrees/10_confetti.png"
         },
         {
             id = 11,
             name = "Devils Deal",
             tooltip = "Survive lethal damage. Consumes this and 2 other random decrees",
-            icon = "assets/img/decrees/11_devilsdeal.png" --TODO
+            icon = "assets/img/decrees/11_devilsdeal.png"
         },
         {
             id = 12,
             name = "Nice",
             tooltip = "Waves: Multiples of 6, you move faster. Multiples of 9, enemies do",
-            icon = "assets/img/decrees/12_nice.png" --TODO
+            icon = "assets/img/decrees/12_nice.png"
         }
     }
 
