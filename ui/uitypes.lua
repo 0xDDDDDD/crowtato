@@ -188,7 +188,6 @@ end
 
 
 -- ==== DECREE Stack ==== --
--- Behaves as a container with "slots", key/value pairs
 local Stack = {}
 Stack.__index = Stack
 
@@ -199,6 +198,9 @@ function Stack:new(opts)
     st.datakey = opts.datakey
 
     st.id = opts.id
+
+    st.tFont = love.graphics.newFont(opts.font, opts.fontTitle)
+    st.bFont = love.graphics.newFont(opts.font, opts.fontBody)
 
     st.centx = opts.centx
     st.centy = opts.centy
@@ -211,41 +213,95 @@ function Stack:new(opts)
     st.cardh = 96
     st.pad = 8
 
-    st.collision = {}
+    st.displayList = {}
+    st.visible = true
+
+    st:buildToolTips()
 
     return st
 end
 
-function Stack:update(dt) -- Read from the context.input.mouse.xy and display tooltip if collision hit
-end
-
-function Stack:set_collision() --TODO:  set the collision and update each time a decree is added
-
-end
-
-function Stack:draw()
-    love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
+-- Build the positioned list of cards + hitboxes
+function Stack:buildDisplayList()
     local decrees = self.datasrc[self.datakey]
     local count = #decrees
+    local list = {}
 
     local totalWidth = (self.cardw * count) + (self.pad * (count - 1))
-
     local leftX = self.centx - totalWidth / 2
     local cardY = self.centy - (self.cardh / 2)
 
     for i, decree in ipairs(decrees) do
         local cardX = leftX + (self.cardw + self.pad) * (i - 1)
 
-        local icon = decree.icon
-        if icon then
-            local iw, ih = icon:getWidth(), icon:getHeight()
-            local cx = cardX + self.cardw / 2
-            local cy = cardY + self.cardh / 2
-            local scale = math.min(self.cardw / iw, self.cardh / ih)
-            love.graphics.draw(icon, cx, cy, 0, scale, scale, iw / 2, ih / 2)
+        list[i] = {
+            icon    = decree.icon,
+            name    = decree.name,
+            tooltip = decree.tooltip,
+            show_tt = false,
+            hitbox  = {
+                l = cardX,
+                r = cardX + self.cardw,
+                t = cardY,
+                b = cardY + self.cardh
+            }
+        }
+    end
+
+    self.displayList = list
+end
+
+function Stack:buildToolTips()
+    self.ttw = self.cardw * 2.5
+    self.tth = self.cardh * 2.5
+
+    --Needs custom sizing based on title text. Confetti Regretti causes overlap
+    self.tt_titley = self.tth * 0.9
+    self.tt_body = self.tth * 0.7
+end
+
+function Stack:update(dt)
+    self:buildDisplayList() --TODO trigger to only do when stack is updated on back end
+    local mx, my = love.mouse.getPosition()
+    for _, item in ipairs(self.displayList) do
+        if mx > item.hitbox.l and mx < item.hitbox.r
+        and my > item.hitbox.t and my < item.hitbox.b then
+            item.show_tt = true
+        else
+            item.show_tt = false
         end
     end
 end
+
+function Stack:draw()
+    if not self.visible then return end
+
+    love.graphics.setColor(1, 1, 1, 1)
+
+    for _, item in ipairs(self.displayList) do
+        if item.icon then
+            local iw, ih = item.icon:getWidth(), item.icon:getHeight()
+            local cx = item.hitbox.l + self.cardw / 2
+            local cy = item.hitbox.t + self.cardh / 2
+            local scale = math.min(self.cardw / iw, self.cardh / ih)
+            love.graphics.draw(item.icon, cx, cy, 0, scale, scale, iw / 2, ih / 2)
+        end
+
+        if item.show_tt == true then
+            local mx, my = love.mouse.getPosition()
+            love.graphics.setColor(0.1, 0.1, 0.1, 0.3)
+            love.graphics.rectangle("fill", mx, my - self.tth, self.ttw, self.tth)
+
+            love.graphics.setFont(self.tFont)
+            love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
+            love.graphics.printf(item.name, mx, my - self.tt_titley, self.ttw, "center")
+
+            love.graphics.setFont(self.bFont)
+            love.graphics.printf(item.tooltip, mx, my - self.tt_body, self.ttw, "center")
+        end
+    end
+end
+
 
 -- ==== DECREE PICKER ==== --
 local Decree = {}
@@ -277,6 +333,9 @@ function Decree:new(opts)
 end
 
 function Decree:show(options)
+    if self.visible == true then
+        return
+    end
     self.options = options
     self.displayList = self:buildDisplayList(options)
     self.visible = true

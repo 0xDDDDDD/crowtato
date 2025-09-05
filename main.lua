@@ -3,6 +3,8 @@ local decrees = require("data.decrees")
 
 local ui = UI:new()
 
+local mousepos
+
 local state = {
     counter = 0,
     wave = 0, 
@@ -70,6 +72,11 @@ function love.load()
         centy = (love.graphics.getHeight() * 0.9),
         w = 400,
         h = 96,
+
+        font = "assets/fonts/Cartoon.ttf",
+        fontTitle = 35,
+        fontBody = 20,
+
         datasrc = state,
         datakey = "owned_decrees"
     }
@@ -116,6 +123,7 @@ function love.mousepressed(x, y, button, istouch, presses)
 end
 
 function love.update(dt)
+    mousepos = love.mouse.getPosition()
     ui:update(dt)
 end
 
