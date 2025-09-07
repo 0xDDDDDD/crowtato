@@ -8,7 +8,7 @@ local decrees = {
         {
             id = 2,
             name = "Snowfall",
-            tooltip = "Enemies move at 30% speed and take 20% more damage for 3 seconds on hit",
+            tooltip = "Enemies move at 60% speed and take 20% more damage for 3 seconds on hit",
             icon = "assets/img/decrees/02_snowfall.png"
         },
         {
@@ -56,7 +56,7 @@ local decrees = {
         {
             id = 10,
             name = "Confetti Regretti",
-            tooltip = "10% chance to teleport to a random point in the map on hit",
+            tooltip = "5% chance to teleport to a random point in the map on hit",
             icon = "assets/img/decrees/10_confetti.png"
         },
         {
@@ -70,7 +70,55 @@ local decrees = {
             name = "Nice",
             tooltip = "Waves: Multiples of 6, you move faster. Multiples of 9, enemies do",
             icon = "assets/img/decrees/12_nice.png"
-        }
+        },
+		{
+			id = 13,
+			name = "Ghost Pepper",
+			tooltip = "Enemies within 3m constantly take damage",
+			icon = "assets/img/decrees/13_ghostpepper.png"
+		},
+		{
+			id = 14,
+			name = "Photosensitivity",
+			tooltip = "Crits stun enemies for 5s on hit. Chance is 2% per decree",
+			icon = "assets/img/decrees/14_photosensitivity.png"
+		},
+		{
+			id = 15,
+			name = "Wingspan",
+			tooltip = "Attack reach is doubled but lost 20% attack speed",
+			icon = "assets/img/decrees/15_Wingspan.png"
+		},
+		{
+			id = 16,
+			name = "Sleight of Hand",
+			tooltip = "0.5% x ATKSPD to plant a bomb on an enemy",
+			icon = "assets/img/decrees/16_sleightofhand.png"
+		},
+		{
+			id = 17,
+			name = "Pickpocket",
+			tooltip = "0.5% x ATKSPD to steal extra coins on hitting an enemy",
+			icon = "assets/img/decrees/17_pickpocket.png"
+		},
+		{
+			id = 18,
+			name = "Fleet of foot",
+			tooltip = "Space to dash. 2 second cool down",
+			icon = "assets/img/decrees/18_fleetoffoot.png"
+		},
+		{
+			id = 19,
+			name = "The Law",
+			tooltip = "When no enemies are within 3m, fire a projectile every 3 seconds",
+			icon = "assets/img/decrees/19_thelaw.png"
+		},
+		{
+			id = 20,
+			name = "Frenzy",
+			tooltip = "10% chance to retrigger each attack",
+			icon = "assets/img/decrees/20_frenzy.png"
+		}
     }
 
 for _, decree in ipairs (decrees) do
