@@ -3,7 +3,7 @@ gamejam for Callunas birthday
 
 
 ## Sept 12th Target
-- Create Scene file. Main should be able to read this to build the UI. UI positioning and changes should work from the scene file.
+- ~~Create Scene file. Main should be able to read this to build the UI. UI positioning and changes should work from the scene file.~~
 - Get main player into the game, able to WASD around (no anim). All input can be handled in main at this point.
 - Make enemy spawner object and add into scene file, use shifting target to spawn enemies randomly and move towards player
 - Iterate over all of the code thus far, clean up, make changes in consideration for timers, anims, input manager and so on.
