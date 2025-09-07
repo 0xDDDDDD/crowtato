@@ -1,5 +1,6 @@
-local Game = require("gamestate")
+--TODO: Go over context.lua.  Should that be a class? or a dumb data table? 
 
+local Game = require("gamestate")
 
 context = {}
 
