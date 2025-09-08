@@ -1,5 +1,3 @@
---TODO:  is it healthy to be calling context.game.components.ui:func() ? Or should I find a way to shorten these paths for readability?
-
 local ui = require("ui.ui")
 local Decrees = require("data.decrees")
 local gameScene = require("scenes.gamescene") -- should this be moved to make a distinction between treating this as a lib vs data
@@ -13,7 +11,7 @@ GameState.__index = GameState
 function GameState:new(context)
     local gs = setmetatable({}, GameState)
 
-    gs.context = context or nil
+    gs.context = context
 
     gs.state = {
         coins = 0,
@@ -23,7 +21,6 @@ function GameState:new(context)
         inventory = {}
     }
     gs.state.decrees = Decrees
-    gs.components = {}
 
     gs.bindings = {
         state = gs.state
@@ -37,23 +34,23 @@ function GameState:load()
 end
 
 function GameState:loadUI()
-    self.components.ui = ui:new(self.context)
+    self.context.ui = ui:new(self.context)
 
     for _, uiDef in ipairs(gameScene.UI) do  -- lowercase 'ui'
         local src = uiDef.datasrc
         if type(src) == "string" and self.bindings[src] then
             uiDef.datasrc = self.bindings[src]
         end
-        self.components.ui:add(uiDef.type, uiDef)
+        self.context.ui:add(uiDef.type, uiDef)
     end
 end
 
 function GameState:update(dt)
-    self.components.ui:update(dt)
+    self.context.ui:update(dt)
 end
 
 function GameState:draw()
-    self.components.ui:draw()
+    self.context.ui:draw()
 end
 
 
@@ -76,13 +73,13 @@ end
 
 function love.mousepressed(x, y, button, istouch, presses) --TODO: needs to go to input module
     if button == 1 then
-        local dp = context.game.components.ui:get("decreepicker")
+        local dp = context.ui:get("decreepicker")
         table.insert(context.game.state.inventory, dp:select(x, y))
     end
 end
 
 function pick_decrees(options) --TODO: This could potentially stay here. Needs consideration
-    local dp = context.game.components.ui:get("decreepicker")
+    local dp = context.ui:get("decreepicker")
     dp:show(options)
 end
 
