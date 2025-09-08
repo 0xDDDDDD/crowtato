@@ -49,14 +49,24 @@ end
 function TweenQueue:draw()
 end
 
-Tween = {
-    target = nil,
-    key = nil,
-    from = nil,
-    to = nil,
-    easing = nil,
-    elapsed = nil
-}
+
+-- === Tween ==== --
+
+local Tween = {}
+Tween.__index = Tween
+
+function Tween:new(target, key, from, to, easing, elapsed)
+    tw = setmetatable({}, Tween)
+
+    tw.target = target
+    tw.key = key
+    tw.from = from
+    tw.to = to
+    tw.easing = easing
+    tw.elapsed = elapsed
+
+    return tw
+end
 
 
 AnimTypes.stateMachine = StateMachine
