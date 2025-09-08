@@ -103,9 +103,9 @@ local decrees = {
 		},
 		{
 			id = 18,
-			name = "Fleet of foot",
+			name = "Dragonfly",
 			tooltip = "Space to dash. 2 second cool down",
-			icon = "assets/img/decrees/18_fleetoffoot.png"
+			icon = "assets/img/decrees/18_dragonfly.png"
 		},
 		{
 			id = 19,
