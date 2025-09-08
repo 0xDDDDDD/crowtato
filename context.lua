@@ -10,7 +10,7 @@ Context.__index = Context
 Context.instance = nil
 
 -- Core modules
-local Render    = require("core.render")
+--local Render    = require("core.render")
 --local Input     = require("core.input")
 --local Audio     = require("core.audio")
 --local Animation = require("core.animation")
@@ -24,7 +24,7 @@ function Context:new()
 
     local c = {}
 
-    c.render = Render:new(c)
+    --c.render = Render:new(c)
     --c.input = Input:new(c)
     --c.audio = Audio:new(c)
     --c.animation = Animation:new(c)
