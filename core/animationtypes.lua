@@ -26,6 +26,18 @@ local SpriteAnimator = {}
 SpriteAnimator.__index = SpriteAnimator
 
 function SpriteAnimator:new(opts)
+    spr = setmetatable({}, SpriteAnimator)
+
+    spr.sheet = opts.sheet
+    spr.quads = opts.quads
+    spr.frames = opts.frames or {1}
+    spr.speed = opts.speed or 0.1
+    spr.loop = opts.loop ~= false
+    spr.currentFrame = 1
+    spr.timer = 0
+    spr.playing = true
+
+    return spr
 end
 
 function SpriteAnimator:update(dt)
