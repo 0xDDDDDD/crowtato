@@ -252,12 +252,12 @@ function Stack:buildDisplayList()
 end
 
 function Stack:buildToolTips()
-    self.ttw = self.cardw * 2.5
+    self.ttw = self.cardw * 3
     self.tth = self.cardh * 2.5
 
     --Needs custom sizing based on title text. Confetti Regretti causes overlap
-    self.tt_titley = self.tth * 0.9
-    self.tt_body = self.tth * 0.7
+    self.tt_titley = self.tth * 0.95
+    self.tt_body = self.tth * 0.6
 end
 
 function Stack:update(dt)
