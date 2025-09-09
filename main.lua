@@ -63,12 +63,12 @@ function Enemy:new()
             typeA = {1, 2},
             typeB = {3, 4}
         },
-        startAnim = "typeA",
+        startAnim = "typeB",
         speed = 0.2,
         loop = true
     })
 
-    enm.currentAnim = "typeA"
+    enm.currentAnim = "typeB"
     enm.posX, enm.posY = 300, 500
     enm.movSpeed = 200
     return enm
@@ -91,8 +91,24 @@ function Enemy:update(dt, px, py)
 end
 
 
-function Enemy:draw()
-    love.graphics.draw(self.animator.sheet, self.animator:getQuad(), self.posX, self.posY)
+function Enemy:draw(playerX)
+    local scaleX = 1
+    local offsetX = 0
+
+    -- If player is to the right, flip horizontally
+    if playerX > self.posX then
+        scaleX = -1
+        offsetX = self.animator.frameW -- shift so it flips around the sprite's left edge
+    end
+
+    love.graphics.draw(
+        self.animator.sheet,
+        self.animator:getQuad(),
+        self.posX + offsetX, -- adjust position so flip pivots correctly
+        self.posY,
+        0,                   -- rotation
+        scaleX, 1            -- scaleX flips horizontally
+    )
 end
 
 
@@ -149,7 +165,7 @@ function love.draw()
     love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
     player:draw()
-    enemy:draw()
+    enemy:draw(player.posX)
     context.game:draw()
 
 end

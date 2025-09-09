@@ -49,7 +49,7 @@ return {
             w = 400,
             h = 96,
 
-            font = "assets/fonts/Cartoon.ttf",
+            font = "assets/fonts/PixelOperator.ttf",
             fontTitle = 35,
             fontBody = 20,
 
@@ -65,7 +65,7 @@ return {
             h = 400,
             choice = {},
 
-            font = "assets/fonts/Cartoon.ttf",
+            font = "assets/fonts/PixelOperator.ttf",
             tsize = 25,
             size = 16,
 
