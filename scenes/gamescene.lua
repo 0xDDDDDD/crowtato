@@ -17,7 +17,7 @@ return {
         {
             type = "counter",
             id = "points",
-            x = 1200,
+            x = love.graphics.getWidth() * 0.9,
             y = 50,
             w = 200,
             h = 30,
@@ -73,4 +73,7 @@ return {
             datakey = "decrees"
         }
     },
+    Player = {
+
+    }
 }
