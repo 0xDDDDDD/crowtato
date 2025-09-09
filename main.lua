@@ -15,44 +15,28 @@ Player.__index = Player
 function Player:new()
     local pl = setmetatable({}, Player)
 
-    pl.spriteSheet = love.graphics.newImage("assets/img/player/player_sheet.png")
-    pl.sheetWidth = pl.spriteSheet:getWidth()
-    pl.sheetHeight = pl.spriteSheet:getHeight()
-    pl.frameWidth = pl.sheetWidth * 0.5
-    pl.frameHeight = pl.sheetHeight * 0.5
-
-    pl.quads = {}
-    local index = 1
-    for row = 0, 1 do
-        for col = 0, 1 do
-            pl.quads[index] = love.graphics.newQuad(
-                col * pl.frameWidth,
-                row * pl.frameHeight,
-                pl.frameWidth,
-                pl.frameHeight,
-                pl.sheetWidth,
-                pl.sheetHeight
-            )
-            index = index + 1
-        end
-    end
+    
+    pl.animator = AnimTypes.spriteAnimator:new{
+        sheet   = love.graphics.newImage("assets/img/player/player_sheet.png"),
+        frameW  = 32,
+        frameH  = 32,
+        anims  = {
+            idle = {1, 2},
+            walk = {2, 3},
+            attack = {4}
+        }
+        speed   = 0.2,
+        loop    = true
+    }
 
     pl.currentAnim = "walk"
-    pl.currentFrame = 1
-    pl.frameTimer = 0
-    pl.frameDuration = 0.2
-
-    pl.actionPlaying = false
-    pl.actionFrameIndex = 3
-    pl.actionTime = 0
-    pl.actionDuration = pl.frameDuration * 2
-
     pl.playerX, pl.playerY = 300, 300
 
     return pl
 end
 
-function Player:update()
+function Player:update(dt)
+    self.animator:update(dt)
 end
 
 function Player:draw()
