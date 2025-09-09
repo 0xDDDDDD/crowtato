@@ -24,13 +24,15 @@ function Player:new()
             idle = {1, 2},
             walk = {2, 3},
             attack = {4}
-        }
+        },
+        startAnim = "idle",
         speed   = 0.2,
         loop    = true
     }
 
-    pl.currentAnim = "walk"
+    pl.currentAnim = "idle"
     pl.playerX, pl.playerY = 300, 300
+    pl.movSpeed = 200
 
     return pl
 end
@@ -40,24 +42,45 @@ function Player:update(dt)
 end
 
 function Player:draw()
-    love.graphics.draw(self.spriteSheet, self.quads[self.currentFrame], self.playerX, self.playerY)
+    love.graphics.draw(self.animator.sheet, self.animator:getQuad(), self.playerX, self.playerY)
 end
-
-
 
 function love.load()
         context.game = Game:new(context)
         context.game:load()
 
-        -- Implement a player
+
         player = Player:new()
 
-        -- implement an enemy
-        -- implement a curved projectile from the enemy to the player
 end
 
 function love.update(dt)
     context.game:update(dt)
+    player.animator.currentAnim = "idle"
+    --Temporary input polling
+    if love.keyboard.isDown("w") then
+        player.playerY = player.playerY - (player.movSpeed * dt)
+        player.animator.currentAnim = "walk"
+    end
+
+    if love.keyboard.isDown("a") then
+        player.playerX = player.playerX - (player.movSpeed * dt)
+        player.animator.currentAnim = "walk"
+    end
+
+    if love.keyboard.isDown("s") then
+        player.playerY = player.playerY + (player.movSpeed * dt)
+        player.animator.currentAnim = "walk"
+    end
+
+    if love.keyboard.isDown("d") then
+        player.playerX = player.playerX + (player.movSpeed * dt)
+        player.animator.currentAnim = "walk"
+    end
+
+    player:update(dt)
+
+    print("\nCurrent anim = ", player.animator.currentAnim)
 end
 
 function love.draw()

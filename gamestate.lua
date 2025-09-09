@@ -64,9 +64,9 @@ function love.keypressed(key) --TODO: needs to go to input module
         context.game.state.coins = context.game.state.coins + 10
     elseif key == "h" and context.game.state.health >= 10 then
         context.game.state.health = context.game.state.health - 10
-    elseif key == "d" then
+    elseif key == "t" then
         pick_decrees(get_random_decrees())
-    elseif key == "w" then
+    elseif key == "p" then
         context.game.state.wave = context.game.state.wave + 1
     end
 end
