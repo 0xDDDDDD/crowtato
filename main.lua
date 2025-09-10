@@ -1,7 +1,7 @@
 --TODO: Go over context.lua.  Should that be a class? or a dumb data table? 
 
 AnimTypes = require("core.animationtypes")
-
+Animation = require("core.animation")
 local Game = require("gamestate")
 context = {}
 local player = nil
@@ -16,8 +16,8 @@ Player.__index = Player
 function Player:new()
     local pl = setmetatable({}, Player)
 
-    
-    pl.animator = AnimTypes.spriteAnimator:new({
+    pl.animator = context.animation:add("player", {
+        type = "spriteAnimator",
         sheet   = love.graphics.newImage("assets/img/player/player_sheet.png"),
         frameW  = 64,
         frameH  = 64,
@@ -27,7 +27,7 @@ function Player:new()
             attack = {4}
         },
         startAnim = "idle",
-        speed   = 0.2,
+        speed   = 0.5,
         loop    = true
     })
 
@@ -54,7 +54,8 @@ Enemy.__index = Enemy
 function Enemy:new()
     local enm = setmetatable({}, Enemy)
 
-    enm.animator = AnimTypes.spriteAnimator:new({
+    enm.animator = context.animation:add("enemy", {
+        type = "spriteAnimator",
         sheet = love.graphics.newImage("assets/img/enemy/enemy_minion.png"),
         frameW = 64,
         frameH = 64,
@@ -63,7 +64,7 @@ function Enemy:new()
             typeB = {3, 4}
         },
         startAnim = "typeA",
-        speed = 0.2,
+        speed = 0.5,
         loop = true
     })
 
@@ -94,20 +95,12 @@ function Enemy:draw(playerX)
     local scaleX = 1
     local offsetX = 0
 
-    -- If player is to the right, flip horizontally
     if playerX > self.posX then
         scaleX = -1
-        offsetX = self.animator.frameW -- shift so it flips around the sprite's left edge
+        offsetX = self.animator.frameW
     end
 
-    love.graphics.draw(
-        self.animator.sheet,
-        self.animator:getQuad(),
-        self.posX + offsetX, -- adjust position so flip pivots correctly
-        self.posY,
-        0,                   -- rotation
-        scaleX, 1            -- scaleX flips horizontally
-    )
+    love.graphics.draw(self.animator.sheet, self.animator:getQuad(), self.posX + offsetX, self.posY, 0, scaleX, 1)
 end
 
 
@@ -115,6 +108,11 @@ end
 function love.load()
         context.game = Game:new(context)
         context.game:load()
+
+        context.animation = Animation:new()
+
+
+        --PLAYER AND ENEMY SCAFFOLD
 
 
         player = Player:new()
@@ -124,6 +122,7 @@ end
 
 function love.update(dt)
     context.game:update(dt)
+    context.animation:update(dt)
 
     local moving = false
 

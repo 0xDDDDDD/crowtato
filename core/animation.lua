@@ -11,6 +11,8 @@ function Animation:new(context)
     anim.enemies = {}
     anim.projectiles = {}
 
+    anim.misc = {}
+
     return anim
 end
 
@@ -20,11 +22,11 @@ function Animation:add(typeName, opts)
 
     local comp = class:new(opts)
     
-    if category == "player" then
+    if typeName == "player" then
         self.player = comp
-    elseif category == "enemy" then
+    elseif typeName == "enemy" then
         table.insert(self.enemies, comp)
-    elseif category == "projectile" then
+    elseif typeName == "projectile" then
         table.insert(self.projectiles, comp)
     else
         table.insert(self.misc, comp)
@@ -35,7 +37,9 @@ end
 
 
 function Animation:update(dt)
-    self.player:update(dt)
+    if self.player then
+        self.player:update(dt)
+    end
 
     for i = #self.enemies, 1, -1 do
         local enemy = self.enemies[i]
