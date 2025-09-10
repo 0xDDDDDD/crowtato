@@ -1,4 +1,3 @@
-local context = require("context")
 local Decrees = require("data.decrees")
 local gameScene = require("scenes.gamescene") -- should this be moved to make a distinction between treating this as a lib vs data
 
@@ -10,8 +9,6 @@ GameState.__index = GameState
 
 function GameState:new()
     local gs = setmetatable({}, GameState)
-
-    --gs.context = context
 
     gs.state = {
         coins = 0,
@@ -71,7 +68,7 @@ function love.keypressed(key) --TODO: needs to go to input module
 end
 
 function love.mousepressed(x, y, button, istouch, presses) --TODO: needs to go to input module
-    if button == 1 then
+    if button == 1 and context.ui:get("decreepicker").visible then
         local dp = context.ui:get("decreepicker")
         table.insert(context.game.state.inventory, dp:select(x, y))
     end
@@ -84,7 +81,7 @@ end
 
 function get_random_decrees() --TODO: move this into a inventory function table?
     math.randomseed(os.time())
-    local choices = {unpack(context.game.state.decrees)}
+    local choices = {unpack(context.game.state.decrees)} -- PROBLEM AREA
 
     --Fisher-Yates Shuffle
     for i = #choices, 2, -1 do
