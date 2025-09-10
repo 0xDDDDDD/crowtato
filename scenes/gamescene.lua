@@ -51,7 +51,7 @@ return {
 
             font = "assets/fonts/PixelOperator.ttf",
             fontTitle = 35,
-            fontBody = 20,
+            fontBody = 25,
 
             datasrc = "state",
             datakey = "inventory"

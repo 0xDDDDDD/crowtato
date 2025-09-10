@@ -252,8 +252,8 @@ function Stack:buildDisplayList()
 end
 
 function Stack:buildToolTips()
-    self.ttw = self.cardw * 3
-    self.tth = self.cardh * 2.5
+    self.ttw = self.cardw * 4
+    self.tth = self.cardh * 2
 
     --Needs custom sizing based on title text. Confetti Regretti causes overlap
     self.tt_titley = self.tth * 0.95
@@ -289,7 +289,7 @@ function Stack:draw()
 
         if item.show_tt == true then
             local mx, my = love.mouse.getPosition()
-            love.graphics.setColor(0.1, 0.1, 0.1, 0.3)
+            love.graphics.setColor(0.1, 0.1, 0.1, 0.7)
             love.graphics.rectangle("fill", mx, my - self.tth, self.ttw, self.tth)
 
             love.graphics.setFont(self.tFont)
