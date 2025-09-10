@@ -1,4 +1,4 @@
-local ui = require("ui.ui")
+local context = require("context")
 local Decrees = require("data.decrees")
 local gameScene = require("scenes.gamescene") -- should this be moved to make a distinction between treating this as a lib vs data
 
@@ -8,10 +8,10 @@ local mousepos
 GameState = {}
 GameState.__index = GameState
 
-function GameState:new(context)
+function GameState:new()
     local gs = setmetatable({}, GameState)
 
-    gs.context = context
+    --gs.context = context
 
     gs.state = {
         coins = 0,
@@ -34,23 +34,22 @@ function GameState:load()
 end
 
 function GameState:loadUI()
-    self.context.ui = ui:new(self.context)
 
-    for _, uiDef in ipairs(gameScene.UI) do  -- lowercase 'ui'
+    for _, uiDef in ipairs(gameScene.UI) do
         local src = uiDef.datasrc
         if type(src) == "string" and self.bindings[src] then
             uiDef.datasrc = self.bindings[src]
         end
-        self.context.ui:add(uiDef.type, uiDef)
+        context.ui:add(uiDef.type, uiDef)
     end
 end
 
 function GameState:update(dt)
-    self.context.ui:update(dt)
+    context.ui:update(dt)
 end
 
 function GameState:draw()
-    self.context.ui:draw()
+    context.ui:draw()
 end
 
 
