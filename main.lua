@@ -31,7 +31,6 @@ function Player:new()
         loop    = true
     })
 
-    pl.currentAnim = "idle"
     pl.posX, pl.posY = 300, 300
     pl.movSpeed = 300
 
@@ -63,14 +62,14 @@ function Enemy:new()
             typeA = {1, 2},
             typeB = {3, 4}
         },
-        startAnim = "typeB",
+        startAnim = "typeA",
         speed = 0.2,
         loop = true
     })
 
-    enm.currentAnim = "typeB"
     enm.posX, enm.posY = 300, 500
     enm.movSpeed = 200
+    enm.dead = false
     return enm
 end
 
