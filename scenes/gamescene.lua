@@ -86,5 +86,18 @@ return {
         startAnim = "idle",
         speed   = 0.5,
         loop    = true
+    },
+    EnemyOpts = {
+        type = "spriteAnimator",
+        sheet = love.graphics.newImage("assets/img/enemy/enemy_minion.png"),
+        frameW = 64,
+        frameH = 64,
+        anims = {
+            typeA = {1, 2},
+            typeB = {3, 4}
+        },
+        startAnim = "typeA",
+        speed = 0.5,
+        loop = true
     }
 }

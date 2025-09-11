@@ -1,22 +1,10 @@
 local Enemy = {}
 Enemy.__index = Enemy
 
-function Enemy:new()
+function Enemy:new(context, opts)
     local enm = setmetatable({}, Enemy)
 
-    enm.animator = context.animation:add("enemy", {
-        type = "spriteAnimator",
-        sheet = love.graphics.newImage("assets/img/enemy/enemy_minion.png"),
-        frameW = 64,
-        frameH = 64,
-        anims = {
-            typeA = {1, 2},
-            typeB = {3, 4}
-        },
-        startAnim = "typeA",
-        speed = 0.5,
-        loop = true
-    })
+    enm.animator = context.animation:add("enemy", opts)
 
     enm.posX, enm.posY = 300, 500
     enm.movSpeed = 200
@@ -41,11 +29,11 @@ function Enemy:update(dt, px, py)
 end
 
 
-function Enemy:draw(playerX)
+function Enemy:draw(px)
     local scaleX = 1
     local offsetX = 0
 
-    if playerX > self.posX then
+    if px > self.posX then
         scaleX = -1
         offsetX = self.animator.frameW
     end

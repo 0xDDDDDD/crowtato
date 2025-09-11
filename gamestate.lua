@@ -14,6 +14,9 @@ function GameState:new(context)
     self.context = context
 
     gs.actors = {
+        player = nil,
+        enemies = {},
+        projectiles = {}
     }
 
     gs.state = {
@@ -37,7 +40,8 @@ function GameState:load()
     
     self:loadUI()
 
-    
+    local enm = Entity.Enemy:new(self.context, gameScene.EnemyOpts)
+    table.insert(self.actors.enemies, enm)
 end
 
 function GameState:loadUI()
@@ -86,10 +90,19 @@ function GameState:update(dt)
     self.actors.player:update(dt)
     context.ui:update(dt)
 
+    for i, item in ipairs(self.actors.enemies) do
+        item:update(dt, self.actors.player.posX, self.actors.player.posY)
+    end
+
 end
 
 function GameState:draw()
     self.actors.player:draw()
+
+    for i, item in ipairs(self.actors.enemies) do
+        item:draw(self.actors.player.posX)
+    end
+
     context.ui:draw()
 end
 
