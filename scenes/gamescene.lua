@@ -73,7 +73,18 @@ return {
             datakey = "decrees"
         }
     },
-    Player = {
-
+    PlayerOpts = {
+        type = "spriteAnimator",
+        sheet   = love.graphics.newImage("assets/img/player/player_sheet.png"),
+        frameW  = 64,
+        frameH  = 64,
+        anims  = {
+            idle = {1, 2},
+            walk = {2, 3},
+            attack = {4}
+        },
+        startAnim = "idle",
+        speed   = 0.5,
+        loop    = true
     }
 }

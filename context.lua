@@ -4,7 +4,7 @@ local Game = require("gamestate")
 local Animation = require("core.animation")
 local UI = require("ui.ui")
 
-Context.game = Game:new()
+Context.game = Game:new(Context)
 Context.animation = Animation:new(Context)
 Context.ui = UI:new(Context)
 

@@ -1,5 +1,6 @@
+local Entity = require("entity.entity")
 local Decrees = require("data.decrees")
-local gameScene = require("scenes.gamescene") -- should this be moved to make a distinction between treating this as a lib vs data
+local gameScene = require("scenes.gamescene")
 
 --global vars
 local mousepos
@@ -7,8 +8,13 @@ local mousepos
 GameState = {}
 GameState.__index = GameState
 
-function GameState:new()
+function GameState:new(context)
     local gs = setmetatable({}, GameState)
+
+    self.context = context
+
+    gs.actors = {
+    }
 
     gs.state = {
         coins = 0,
@@ -27,7 +33,11 @@ function GameState:new()
 end
 
 function GameState:load()
+    self.actors.player = Entity.Player:new(self.context, gameScene.PlayerOpts)
+    
     self:loadUI()
+
+    
 end
 
 function GameState:loadUI()
@@ -42,10 +52,44 @@ function GameState:loadUI()
 end
 
 function GameState:update(dt)
+
+    local moving = false
+
+    if love.keyboard.isDown("w") then
+        self.actors.player.posY = self.actors.player.posY - (self.actors.player.movSpeed * dt)
+        moving = true
+    end
+    if love.keyboard.isDown("a") then
+        self.actors.player.posX = self.actors.player.posX - (self.actors.player.movSpeed * dt)
+        moving = true
+    end
+    if love.keyboard.isDown("s") then
+        self.actors.player.posY = self.actors.player.posY + (self.actors.player.movSpeed * dt)
+        moving = true
+    end
+    if love.keyboard.isDown("d") then
+        self.actors.player.posX = self.actors.player.posX + (self.actors.player.movSpeed * dt)
+        moving = true
+    end
+
+    if moving then
+        if self.actors.player.animator.currentAnim ~= "walk" then
+            self.actors.player.animator:setAnimation("walk")
+        end
+    else
+        if self.actors.player.animator.currentAnim ~= "idle" then
+            self.actors.player.animator:setAnimation("idle")
+        end
+    end
+
+
+    self.actors.player:update(dt)
     context.ui:update(dt)
+
 end
 
 function GameState:draw()
+    self.actors.player:draw()
     context.ui:draw()
 end
 
