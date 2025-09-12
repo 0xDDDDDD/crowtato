@@ -119,7 +119,7 @@ function love.keypressed(key) --TODO: needs to go to input module
     elseif key == "h" and context.game.state.health >= 10 then
         context.game.state.health = context.game.state.health - 10
     elseif key == "t" then
-        pick_decrees(get_random_decrees())
+        pick_decrees(get_random_decrees(context))
     elseif key == "p" then
         context.game.state.wave = context.game.state.wave + 1
     end
@@ -137,23 +137,34 @@ function pick_decrees(options) --TODO: This could potentially stay here. Needs c
     dp:show(options)
 end
 
-function get_random_decrees() --TODO: move this into a inventory function table?
-    math.randomseed(os.time())
-    local choices = {unpack(context.game.state.decrees)} -- PROBLEM AREA
+function get_random_decrees(context)
 
-    --Fisher-Yates Shuffle
-    for i = #choices, 2, -1 do
+    local allDecrees = context.game.state.decrees
+    local inventory  = context.game.state.inventory
+
+
+    local filtered = {}
+    for _, decree in ipairs(allDecrees) do
+        if decree.multi == true then
+            table.insert(filtered, decree)
+        else
+            if not inventory[decree.id] then
+                table.insert(filtered, decree)
+            end
+        end
+    end
+
+    for i = #filtered, 2, -1 do
         local j = math.random(i)
-        choices[i], choices[j] = choices[j], choices[i]
+        filtered[i], filtered[j] = filtered[j], filtered[i]
     end
 
     local choice = {}
-    for i = 1, math.min(3, #choices) do
-        table.insert(choice, choices[i])
+    for i = 1, math.min(3, #filtered) do
+        table.insert(choice, filtered[i])
     end
 
     return choice
 end
-
 
 return GameState

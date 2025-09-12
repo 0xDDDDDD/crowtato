@@ -2,12 +2,18 @@
 gamejam for Callunas birthday
 
 
-## Sept 12th Target
-- ~~Create Scene file. Main should be able to read this to build the UI. UI positioning and changes should work from the scene file.~~
-- ~~Get main player into the game, able to WASD around (no anim). All input can be handled in main at this point.~~
-- Make enemy spawner object and add into scene file, use shifting target to spawn enemies randomly and move towards player
-- ~~Create 4 more decrees~~
-- Add "multi" option on decrees, change decree choice generator to omit a non-multi choice if it's already owned. (Do not remove from list... Spent decrees can show up again)
+## Sept 16th Target
+- Finish the functionality of the spawner
+- Add the different game states into the manager: inPlay, pickDecree, and the logic for switching waves.
+- Add the attacking when enemy is in range (util/math helpers for range/direction)
+- Add the anim for attacking, including rotating it for the enemy direction
+- Figure out how to make a collision for the hit to attack multiple enemies
+- Add the more functional side of enemies (collisions, hp, etc)
+
+## Sept 19th Target
+- Refactor to make sure a clean stream between interactions and wave control
+- Set up exposed values to allow for decree modifying values such as player, enemy, and reading game state values like wave, coins, etc
+- Refactor to make Input manager and move input there to clean it up.
 
 <br><br>
 
