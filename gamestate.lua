@@ -1,6 +1,7 @@
 local Entity = require("entity.entity")
 local Decrees = require("data.decrees")
 local gameScene = require("scenes.gamescene")
+local Spawner = require("systems.spawner")
 
 --global vars
 local mousepos

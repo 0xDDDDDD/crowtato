@@ -2,7 +2,7 @@ context = require("context")
 
 function love.load()
 
-        context.game:load()
+    context.game:load()
 
 end
 
