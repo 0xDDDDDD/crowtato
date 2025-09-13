@@ -58,7 +58,11 @@ end
 
 function GameState:update(dt)
 
-    self.spawner:update(dt)
+    local spawnResult = self.spawner:update(dt)
+    if spawnResult then
+        print(spawnResult[2] .. " " .. spawnResult[3])
+        self:add_actor("enemy", spawnResult[2], spawnResult[3])
+    end
 
     local moving = false
 
@@ -171,6 +175,7 @@ end
 
 --Refer to "TODO" in entity/entity.lua
 function GameState:add_actor(type, x, y)
+    print("ADDING ACTOR " .. type)
     if type == "enemy" then
         local opts = gameScene.EnemyOpts
         opts.posX, opts.posY = x, y

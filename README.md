@@ -2,8 +2,8 @@
 gamejam for Callunas birthday
 
 
-## Sept 16th Target
-- Finish the functionality of the spawner
+## Sept 17th Target
+- Clean up the structure of the spawner and the way the gamestate/spawner/gamescene/recipe relationship works
 - Add the different game states into the manager: inPlay, pickDecree, and the logic for switching waves.
 - Add the attacking when enemy is in range (util/math helpers for range/direction)
 - Add the anim for attacking, including rotating it for the enemy direction

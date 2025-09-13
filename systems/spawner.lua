@@ -61,9 +61,10 @@ function Spawner:update(dt)
             event.spawnTimer = event.spawnTimer + dt
             while event.spawnTimer >= event.interval and event.remaining > 0 do
                 self.tgtx, self.tgty = self.getSpawnBand() 
-                self:spawn(event.type)
+                --self:spawn(event.type)
                 event.remaining = event.remaining - 1
                 event.spawnTimer = event.spawnTimer - event.interval
+                return {event.type, self.tgtx, self.tgty}
             end
         end
     end
@@ -84,7 +85,6 @@ end
 
 
 function Spawner:spawn(eventType)
-    print("x, y = " .. self.tgtx .. ", " .. self.tgty)
     self.game:add_actor("enemy", self.tgtx, self.tgty)
 end
 
