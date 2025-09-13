@@ -6,7 +6,7 @@ function Enemy:new(context, opts)
 
     enm.animator = context.animation:add("enemy", opts)
 
-    enm.posX, enm.posY = 300, 500
+    enm.posX, enm.posY = opts.posX or 0, opts.posY or 0
     enm.movSpeed = 200
     enm.dead = false
     return enm

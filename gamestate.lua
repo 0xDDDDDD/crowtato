@@ -41,8 +41,8 @@ function GameState:load()
     
     self:loadUI()
 
-    local enm = Entity.Enemy:new(self.context, gameScene.EnemyOpts)
-    table.insert(self.actors.enemies, enm)
+    self.spawner = Spawner:new(context, self)
+    self.spawner:load()
 end
 
 function GameState:loadUI()
@@ -57,6 +57,8 @@ function GameState:loadUI()
 end
 
 function GameState:update(dt)
+
+    self.spawner:update(dt)
 
     local moving = false
 
@@ -165,6 +167,16 @@ function get_random_decrees(context)
     end
 
     return choice
+end
+
+--Refer to "TODO" in entity/entity.lua
+function GameState:add_actor(type, x, y)
+    if type == "enemy" then
+        local opts = gameScene.EnemyOpts
+        opts.posX, opts.posY = x, y
+        local enm = Entity.Enemy:new(self.context, opts)
+        table.insert(self.actors.enemies, enm)
+    end
 end
 
 return GameState

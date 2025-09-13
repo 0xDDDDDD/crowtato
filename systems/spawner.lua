@@ -1,12 +1,14 @@
+local Enemy = require("entity.enemy")
 local Spawner = {}
 Spawner.__index = Spawner
 
-function Spawner:new(context)
+function Spawner:new(context, game)
     local spawn = setmetatable({}, Spawner)
 
     spawn.context = context
+    spawn.game = game
 
-    spawn.currentWave = context.game.waveCounter
+    spawn.currentWave = game.state.wave
     spawn.finished = true
     spawn.waveTimer = 0.0
 
@@ -38,11 +40,15 @@ end
 
 function Spawner:update(dt)
     self.waveTimer = self.waveTimer + dt
-    local waveIndex = self.context.game.waveCounter
+    local waveIndex = self.game.state.wave
     local wave = self.recipe[waveIndex]
+
     if not wave then return end
 
     self.finished = false
+
+    --Set the spawn targetter
+    self.tgtx, self.tgty = self.getSpawnBand() 
 
     for _, event in ipairs(wave) do
         if not event.active and self.waveTimer >= event.time then
@@ -54,6 +60,7 @@ function Spawner:update(dt)
         if event.active and event.remaining > 0 then
             event.spawnTimer = event.spawnTimer + dt
             while event.spawnTimer >= event.interval and event.remaining > 0 do
+                self.tgtx, self.tgty = self.getSpawnBand() 
                 self:spawn(event.type)
                 event.remaining = event.remaining - 1
                 event.spawnTimer = event.spawnTimer - event.interval
@@ -77,5 +84,28 @@ end
 
 
 function Spawner:spawn(eventType)
-    
+    print("x, y = " .. self.tgtx .. ", " .. self.tgty)
+    self.game:add_actor("enemy", self.tgtx, self.tgty)
 end
+
+function Spawner:getSpawnBand()
+    local w, h = love.graphics.getWidth(), love.graphics.getHeight()
+    local gap = 100
+    local band = 100
+
+    local bands = {
+        {-gap - band, -gap, 0, h,},
+        {w + gap, w + gap + band, 0, h},
+        {0, w, -gap - band, -gap},
+        {0, w, h + gap, h + gap + band}
+    }
+
+    local bandIndex = math.random(#bands)
+    local b = bands[bandIndex]
+
+    local x = math.random(b[1], b[2])
+    local y = math.random(b[3], b[4])
+    return x, y
+end
+
+return Spawner

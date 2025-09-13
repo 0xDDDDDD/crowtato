@@ -38,3 +38,8 @@ It's a good idea to implement rust style ownership over data. Since this can't b
 
 ## Error handling
 While it's not done well in this project, in future projects I need to learn about graceful and low-cost error handling in lua. 
+<br>
+
+## Order of Operations
+While BODMAS/PEMDAS is undeniably good to know it does nothing for actual readability. always use parenthesis so that there is one consistent style rather than having to switching between an abstract ruleset when it applies and parenthesis when it doesn't.
+<br>

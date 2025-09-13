@@ -90,6 +90,8 @@ return {
     EnemyOpts = {
         type = "spriteAnimator",
         sheet = love.graphics.newImage("assets/img/enemy/enemy_minion.png"),
+        posX = 0,
+        posY = 0,
         frameW = 64,
         frameH = 64,
         anims = {
