@@ -30,6 +30,11 @@ gamejam for Callunas birthday
 
 <br><br>
 
+# Stretch Goals
+- Weapons (different system for projectile vs melee)
+- Osteo Striga, Evensong, Glaive, Kompressa
+- Randomized boss that shows up repeatedly but randomly (think: tormentor in onslaught)
+
 # Lessons from this project
 
 ## Data ownership
