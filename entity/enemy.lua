@@ -10,25 +10,15 @@ function Enemy:new(entity, opts, animator)
     enm.animator = animator
 
     --Enemy Data
-    enm.health = opts.health
-    enm.movSpeed = opts.movSpeed
+    enm.posX, enm.posY = opts.posX or 0, opts.posY or 0
+    enm.health = opts.health or 100
+    enm.movSpeed = opts.movSpeed or 200
     enm.stun = false
     enm.dead = false
 
     --Misc
     enm.timers = {}
 
-    return enm
-end
-
-function Enemy:new(context, opts)
-    local enm = setmetatable({}, Enemy)
-
-    enm.animator = context.animation:add("enemy", opts)
-
-    enm.posX, enm.posY = opts.posX or 0, opts.posY or 0
-    enm.movSpeed = 200
-    enm.dead = false
     return enm
 end
 
@@ -62,24 +52,3 @@ function Enemy:draw(px)
 end
 
 return Enemy
-
-
---[[
-   Maggot = {
-        animType = "spriteAnimator",
-        sheet = sheet_minions,
-        frameW = 64,
-        frameH = 64,
-        anims = {
-            walk = {1, 2}
-        },
-        startAnim = "walk",
-        animSpeed = 0.5,
-        loop = true,
-        posX = 0,
-        posY = 0,
-        behaviors = {
-            "chase"
-        }
-    },
-]]--
