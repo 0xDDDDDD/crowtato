@@ -86,8 +86,7 @@ return {
         startAnim = "idle",
         speed   = 0.5,
         loop    = true
-    },  --TODO: EnemyOpts has moved to enemyTypes.lua. Should this instead be a list of enemy names that can be spawned?
-        --TODO: if i remove this, should i also move playerOpts somewhere else? 
+    },
     EnemyOpts = {
         type = "spriteAnimator",
         sheet = love.graphics.newImage("assets/img/enemy/enemy_minion.png"),

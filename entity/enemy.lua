@@ -1,25 +1,5 @@
 local Enemy = {}
-
 Enemy.__index = Enemy
-
-function Enemy:new(entity, opts, animator)
-    local enm = setmetatable({}, Enemy)
-
-    --Modules
-    enm.entity = entity
-    enm.animator = animator
-
-    --Enemy Data
-    enm.health = opts.health
-    enm.movSpeed = opts.movSpeed
-    enm.stun = false
-    enm.dead = false
-
-    --Misc
-    enm.timers = {}
-
-    return enm
-end
 
 function Enemy:new(context, opts)
     local enm = setmetatable({}, Enemy)
@@ -62,24 +42,3 @@ function Enemy:draw(px)
 end
 
 return Enemy
-
-
---[[
-   Maggot = {
-        animType = "spriteAnimator",
-        sheet = sheet_minions,
-        frameW = 64,
-        frameH = 64,
-        anims = {
-            walk = {1, 2}
-        },
-        startAnim = "walk",
-        animSpeed = 0.5,
-        loop = true,
-        posX = 0,
-        posY = 0,
-        behaviors = {
-            "chase"
-        }
-    },
-]]--
