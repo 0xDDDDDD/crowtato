@@ -40,7 +40,7 @@ function SpriteAnimator:new(opts)
     spr.currentFrame = 1
 
     --Settings/Data
-    spr.speed = opts.speed or 0.1
+    spr.animSpeed = opts.animSpeed or 0.1
     spr.loop = opts.loop ~= false
     spr.timer = 0
     spr.playing = true
@@ -82,8 +82,8 @@ function SpriteAnimator:update(dt)
 
     self.timer = self.timer + dt
 
-    if self.timer >= self.speed then
-        self.timer = self.timer - self.speed
+    if self.timer >= self.animSpeed then
+        self.timer = self.timer - self.animSpeed
         self.currentFrame = self.currentFrame + 1
 
         if self.currentFrame > #self.frames then

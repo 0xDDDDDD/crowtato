@@ -1,7 +1,6 @@
 local Entity = require("entity.entity")
 local Decrees = require("data.decrees")
 local gameScene = require("scenes.gamescene")
-local Spawner = require("systems.spawner")
 
 --global vars
 local mousepos
@@ -13,12 +12,7 @@ function GameState:new(context)
     local gs = setmetatable({}, GameState)
 
     self.context = context
-
-    gs.actors = {
-        player = nil,
-        enemies = {},
-        projectiles = {}
-    }
+    self.entity = nil
 
     gs.state = {
         coins = 0,
@@ -37,12 +31,12 @@ function GameState:new(context)
 end
 
 function GameState:load()
-    self.actors.player = Entity.Player:new(self.context, gameScene.PlayerOpts)
-    
-    self:loadUI()
+    self.entity = Entity:new(self.context)
 
-    self.spawner = Spawner:new(context, self)
-    self.spawner:load()
+    --load the player in
+    self.entity:load()
+
+    self:loadUI()
 end
 
 function GameState:loadUI()
@@ -58,58 +52,42 @@ end
 
 function GameState:update(dt)
 
-    local spawnResult = self.spawner:update(dt)
-    if spawnResult then
-        print(spawnResult[2] .. " " .. spawnResult[3])
-        self:add_actor("enemy", spawnResult[2], spawnResult[3])
-    end
-
     local moving = false
 
     if love.keyboard.isDown("w") then
-        self.actors.player.posY = self.actors.player.posY - (self.actors.player.movSpeed * dt)
+        self.entity.player.posY = self.entity.player.posY - (self.entity.player.movSpeed * dt)
         moving = true
     end
     if love.keyboard.isDown("a") then
-        self.actors.player.posX = self.actors.player.posX - (self.actors.player.movSpeed * dt)
+        self.entity.player.posX = self.entity.player.posX - (self.entity.player.movSpeed * dt)
         moving = true
     end
     if love.keyboard.isDown("s") then
-        self.actors.player.posY = self.actors.player.posY + (self.actors.player.movSpeed * dt)
+        self.entity.player.posY = self.entity.player.posY + (self.entity.player.movSpeed * dt)
         moving = true
     end
     if love.keyboard.isDown("d") then
-        self.actors.player.posX = self.actors.player.posX + (self.actors.player.movSpeed * dt)
+        self.entity.player.posX = self.entity.player.posX + (self.entity.player.movSpeed * dt)
         moving = true
     end
 
     if moving then
-        if self.actors.player.animator.currentAnim ~= "walk" then
-            self.actors.player.animator:setAnimation("walk")
+        if self.entity.player.animator.currentAnim ~= "walk" then
+            self.entity.player.animator:setAnimation("walk")
         end
     else
-        if self.actors.player.animator.currentAnim ~= "idle" then
-            self.actors.player.animator:setAnimation("idle")
+        if self.entity.player.animator.currentAnim ~= "idle" then
+            self.entity.player.animator:setAnimation("idle")
         end
     end
 
-
-    self.actors.player:update(dt)
     context.ui:update(dt)
-
-    for i, item in ipairs(self.actors.enemies) do
-        item:update(dt, self.actors.player.posX, self.actors.player.posY)
-    end
+    self.entity:update(dt)
 
 end
 
 function GameState:draw()
-    self.actors.player:draw()
-
-    for i, item in ipairs(self.actors.enemies) do
-        item:draw(self.actors.player.posX)
-    end
-
+    self.entity:draw()
     context.ui:draw()
 end
 
@@ -171,17 +149,6 @@ function get_random_decrees(context)
     end
 
     return choice
-end
-
---Refer to "TODO" in entity/entity.lua
-function GameState:add_actor(type, x, y)
-    print("ADDING ACTOR " .. type)
-    if type == "enemy" then
-        local opts = gameScene.EnemyOpts
-        opts.posX, opts.posY = x, y
-        local enm = Entity.Enemy:new(self.context, opts)
-        table.insert(self.actors.enemies, enm)
-    end
 end
 
 return GameState

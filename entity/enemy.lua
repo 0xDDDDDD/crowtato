@@ -8,6 +8,7 @@ function Enemy:new(entity, opts, animator)
     --Modules
     enm.entity = entity
     enm.animator = animator
+    enm.behaviors = nil --for now, add when this is implemented
 
     --Enemy Data
     enm.posX, enm.posY = opts.posX or 0, opts.posY or 0

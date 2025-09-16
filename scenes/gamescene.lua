@@ -72,35 +72,5 @@ return {
             datasrc = "state",
             datakey = "decrees"
         }
-    },
-    PlayerOpts = {
-        type = "spriteAnimator",
-        sheet   = love.graphics.newImage("assets/img/player/player_sheet.png"),
-        frameW  = 64,
-        frameH  = 64,
-        anims  = {
-            idle = {1, 2},
-            walk = {2, 3},
-            attack = {4}
-        },
-        startAnim = "idle",
-        speed   = 0.5,
-        loop    = true
-    },  --TODO: EnemyOpts has moved to enemyTypes.lua. Should this instead be a list of enemy names that can be spawned?
-        --TODO: if i remove this, should i also move playerOpts somewhere else? 
-    EnemyOpts = {
-        type = "spriteAnimator",
-        sheet = love.graphics.newImage("assets/img/enemy/enemy_minion.png"),
-        posX = 0,
-        posY = 0,
-        frameW = 64,
-        frameH = 64,
-        anims = {
-            typeA = {1, 2},
-            typeB = {3, 4}
-        },
-        startAnim = "typeA",
-        speed = 0.5,
-        loop = true
     }
 }

@@ -17,7 +17,7 @@ function Animation:new(context)
 end
 
 function Animation:add(typeName, opts)
-    local class = AnimTypes[opts.type]
+    local class = AnimTypes[opts.animType]
     if not class then error("Unknown type: " .. tostring(typeName)) end
 
     local comp = class:new(opts)
