@@ -2,18 +2,11 @@
 gamejam for Callunas birthday
 
 
-## Sept 17th Target
-- Clean up the structure of the spawner and the way the gamestate/spawner/gamescene/recipe relationship works
-- Add the different game states into the manager: inPlay, pickDecree, and the logic for switching waves.
-- Add the attacking when enemy is in range (util/math helpers for range/direction)
-- Add the anim for attacking, including rotating it for the enemy direction
-- Figure out how to make a collision for the hit to attack multiple enemies
-- Add the more functional side of enemies (collisions, hp, etc)
-
-## Sept 19th Target
-- Refactor to make sure a clean stream between interactions and wave control
-- Set up exposed values to allow for decree modifying values such as player, enemy, and reading game state values like wave, coins, etc
-- Refactor to make Input manager and move input there to clean it up.
+## Sept 20th Target
+- Get a song done. Even if its a basic repeating ostinato with some chords (but lets aim for 3 movements, minimum)
+- Finish the input handler, complete with context awareness to clean out all the code in the gamestate manager
+- Set up the game state related stuff. 
+- Set up the framework at least, for the collision/hit detection and enemy range detection.
 
 <br><br>
 
