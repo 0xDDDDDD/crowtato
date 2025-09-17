@@ -2,13 +2,13 @@ local Enemy = require("entity.enemy")
 local Spawner = {}
 Spawner.__index = Spawner
 
-function Spawner:new(context, game)
+function Spawner:new(context, entity)
     local spawn = setmetatable({}, Spawner)
 
     spawn.context = context
-    spawn.game = game
+    spawn.entity = entity
 
-    spawn.currentWave = game.state.wave
+    spawn.currentWave = context.game.state.wave
     spawn.finished = true
     spawn.waveTimer = 0.0
 
@@ -23,15 +23,15 @@ end
 function Spawner:load()
     self.recipe = {
         [1] = {
-            {time = 3.0, type="typeA", count = 30, interval = 1.0}
+            {time = 3.0, type="Maggot", count = 30, interval = 1.0}
         },
         [2] = {
-            {time = 3.0, type="typeA", count = 40, interval = 1.0},
-            {time = 15.0, type="typeB", count = 4, interval = 8.0}
+            {time = 3.0, type="Maggot", count = 40, interval = 1.0},
+            {time = 15.0, type="Slime", count = 4, interval = 8.0}
         },
         [3] = {
-            {time = 3.0, type="typeA", count = 60, interval = 1.0},
-            {time = 10.0, type="typeB", count = 15, interval = 5.0}
+            {time = 3.0, type="Maggot", count = 60, interval = 1.0},
+            {time = 10.0, type="Slime", count = 15, interval = 5.0}
         }
     }
 
@@ -40,7 +40,7 @@ end
 
 function Spawner:update(dt)
     self.waveTimer = self.waveTimer + dt
-    local waveIndex = self.game.state.wave
+    local waveIndex = self.context.game.state.wave
     local wave = self.recipe[waveIndex]
 
     if not wave then return end
@@ -61,10 +61,9 @@ function Spawner:update(dt)
             event.spawnTimer = event.spawnTimer + dt
             while event.spawnTimer >= event.interval and event.remaining > 0 do
                 self.tgtx, self.tgty = self.getSpawnBand() 
-                --self:spawn(event.type)
                 event.remaining = event.remaining - 1
                 event.spawnTimer = event.spawnTimer - event.interval
-                return {event.type, self.tgtx, self.tgty}
+                self:spawn(event.type)
             end
         end
     end
@@ -84,8 +83,8 @@ function Spawner:update(dt)
 end
 
 
-function Spawner:spawn(eventType)
-    self.game:add_actor("enemy", self.tgtx, self.tgty)
+function Spawner:spawn(enemyType)
+    self.entity:addEnemy(enemyType, {self.tgtx, self.tgty})
 end
 
 function Spawner:getSpawnBand()

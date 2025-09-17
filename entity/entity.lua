@@ -2,6 +2,7 @@ local Animation = require("core.animation")
 local Player = require("entity.player")
 local Enemy = require("entity.enemy")
 local ETypes = require("entity.enemyTypes")
+local Spawner = require("systems.spawner")
 
 
 local Entity = {}
@@ -11,6 +12,7 @@ function Entity:new(context)
     local ent = setmetatable({}, Entity)
 
     self.context = context
+    self.spawner = nil
 
     ent.player = nil
     ent.enemies = {}
@@ -20,7 +22,8 @@ function Entity:new(context)
 end
 
 function Entity:load()
---TODO: Set up the entity, potentially load the player here
+    self.spawner = Spawner:new(self.context, self)
+    self.spawner:load()
     self:addPlayer()
     self:addEnemy("Maggot", {posX = 200, posY = 200})
 end
@@ -47,6 +50,9 @@ end
 
 function Entity:update(dt, px, py)
     self.player:update(dt)
+
+    self.spawner:update(dt)
+
     for i = #self.enemies, 1, -1 do
         local e = self.enemies[i]
         e:update(dt, self.player.posX, self.player.posY) --TODO: get player position when necessary
