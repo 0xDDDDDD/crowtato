@@ -84,7 +84,11 @@ end
 
 
 function Spawner:spawn(enemyType)
-    self.entity:addEnemy(enemyType, {self.tgtx, self.tgty})
+    pos = {
+        posX = self.tgtx,
+        posY = self.tgty
+    }
+    self.entity:addEnemy(enemyType, pos)
 end
 
 function Spawner:getSpawnBand()

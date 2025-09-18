@@ -25,7 +25,6 @@ function Entity:load()
     self.spawner = Spawner:new(self.context, self)
     self.spawner:load()
     self:addPlayer()
-    self:addEnemy("Maggot", {posX = 200, posY = 200})
 end
 
 function Entity:addPlayer()
