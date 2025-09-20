@@ -61,8 +61,8 @@ function SpriteAnimator:sliceSheet()
 end
 
 function SpriteAnimator:setAnimation(name, reset)
-    if self.anims[name] then
 
+    if self.anims[name] then
         if name ~= self.currentAnim then reset = true end
 
         self.currentAnim = name

@@ -7,8 +7,8 @@ function Input:new(context)
     input.context = context
 
     input.actions = {
-        movex = 0,
-        movey = 0
+        moveX = 0,
+        moveY = 0
     }
 
     input.mouse = {
@@ -20,7 +20,15 @@ function Input:new(context)
     return input
 end
 
-function Input:update(raw)
+function Input:update()
+
+    self.actions.moveX  = (love.keyboard.isDown("d") and 1 or 0)
+                        - (love.keyboard.isDown("a") and 1 or 0)
+    self.actions.moveY  = (love.keyboard.isDown("s") and 1 or 0)
+                        - (love.keyboard.isDown("w") and 1 or 0)
+
+    self.mouse.posX, self.mouse.posY = love.mouse.getPosition()
+    self.mouse.lmb = love.mouse.isDown(1)
 end
 
 function Input:get()

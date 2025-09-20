@@ -52,35 +52,7 @@ end
 
 function GameState:update(dt)
 
-    local moving = false
-
-    if love.keyboard.isDown("w") then
-        self.entity.player.posY = self.entity.player.posY - (self.entity.player.movSpeed * dt)
-        moving = true
-    end
-    if love.keyboard.isDown("a") then
-        self.entity.player.posX = self.entity.player.posX - (self.entity.player.movSpeed * dt)
-        moving = true
-    end
-    if love.keyboard.isDown("s") then
-        self.entity.player.posY = self.entity.player.posY + (self.entity.player.movSpeed * dt)
-        moving = true
-    end
-    if love.keyboard.isDown("d") then
-        self.entity.player.posX = self.entity.player.posX + (self.entity.player.movSpeed * dt)
-        moving = true
-    end
-
-    if moving then
-        if self.entity.player.animator.currentAnim ~= "walk" then
-            self.entity.player.animator:setAnimation("walk")
-        end
-    else
-        if self.entity.player.animator.currentAnim ~= "idle" then
-            self.entity.player.animator:setAnimation("idle")
-        end
-    end
-
+    context.input:update()
     context.ui:update(dt)
     self.entity:update(dt)
 

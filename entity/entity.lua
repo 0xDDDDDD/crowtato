@@ -29,7 +29,7 @@ end
 
 function Entity:addPlayer()
     local anim = self.context.animation:add("player", Player.defaultOpts)
-    self.player = Player:new(self, Player.defaultOpts, anim)
+    self.player = Player:new(self.context, self, Player.defaultOpts, anim)
 end
 
 function Entity:addEnemy(typeName, overrides)
