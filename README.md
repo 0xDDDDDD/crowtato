@@ -2,11 +2,15 @@
 gamejam for Callunas birthday
 
 
-## Sept 20th Target
-- Get a song done. Even if its a basic repeating ostinato with some chords (but lets aim for 3 movements, minimum)
-- Finish the input handler, complete with context awareness to clean out all the code in the gamestate manager
-- Set up the game state related stuff. 
-- Set up the framework at least, for the collision/hit detection and enemy range detection.
+## Final target
+- Attack animation plays depending on nearest enemy direction
+- Attacks hit enemies, reduce their health, maybe impulse them backwards if time allows?
+- Enemy collision check to see if should hurt player
+- Play music on loop
+- Game state has decree selection phase
+- Players and Enemies have exposed stats
+- Decrees have functions in their decree table
+- Game state loops through decrees and factors in their functionality
 
 <br><br>
 
