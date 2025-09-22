@@ -1,3 +1,5 @@
+local Weapons = require("entity.weaponTypes")
+
 local playerSprite = love.graphics.newImage("assets/img/player/player_sheet.png")
 
 local Player = {}
@@ -32,7 +34,11 @@ function Player:new(context, entity, opts, animator)
     pl.movSpeed = 300
     pl.moving = false
 
-    pl.atkSpeed = 2.0
+    pl.weapon = Weapons.Claws
+    pl.weaponPosX = nil
+    pl.weaponPosY = nil
+    pl.attacking = false
+    pl.atkSpeed = 0.5
     pl.atkRange = 100
 
     --Misc
@@ -40,17 +46,25 @@ function Player:new(context, entity, opts, animator)
         attack = 0.0
     }
 
+    pl:equip("Claws")
+
     return pl
 end
 
 function Player:update(dt)
 
-    self.timers.attack = self.timers.attack - dt
 
-    if self.timers.attack <= 0 then
-        self.timers.attack = self.atkSpeed
-        self:attack()
+    self.timers.attack = math.max(0, self.timers.attack - dt)
+
+    local target, dist = self.entity:nearestEnemy(self.posX, self.posY)
+    if target and dist <= self.atkRange then
+        if self.timers.attack == 0 then
+            self:attack()
+            self.timers.attack = self.atkSpeed
+        end
     end
+
+    
 
     self.posX = self.posX + ((self.context.input.actions.moveX * self.movSpeed) * dt)
     self.posY = self.posY + ((self.context.input.actions.moveY * self.movSpeed) * dt)
@@ -72,10 +86,32 @@ function Player:update(dt)
     end
 
     self.animator:update(dt)
+
+    if self.weaponAnimator then
+        self.weaponAnimator:update(dt)
+    end
 end
 
 function Player:draw()
     love.graphics.draw(self.animator.sheet, self.animator:getQuad(), self.posX, self.posY)
+
+        if self.weaponAnimator and not self.weaponAnimator.finished then
+        love.graphics.draw(
+            self.weaponAnimator.sheet,
+            self.weaponAnimator:getQuad(),
+            self.weaponPosX,
+            self.weaponPosY,
+            self.weaponAnimator.rotation or 0,
+            4, 4,
+            self.weaponAnimator.frameW / 2,
+            self.weaponAnimator.frameH / 2
+        )
+    end
+end
+
+function Player:equip(weaponName)
+    self.weapon = Weapons[weaponName]
+    self.weaponAnimator = self.context.animation:add("weapon", self.weapon)
 end
 
 function Player:attack()
@@ -90,8 +126,21 @@ function Player:attack()
     local dy = target.posY - self.posY
 
     if (dx*dx + dy*dy) <= self.atkRange * self.atkRange then
-        
-        print("Attacking")
+        local angle = math.atan2(dy, dx)
+
+
+        if self.weaponAnimator then
+            self.weaponAnimator.rotation = angle + 90
+            self.weaponPosX = self.posX + math.cos(angle) * self.atkRange
+            self.weaponPosY = self.posY + math.sin(angle) * self.atkRange
+        end
+
+        if self.weaponAnimator then
+            self.weaponAnimator:playOnce("swing")
+        end
+
+        self.attacking = true
+
     end
 end
 

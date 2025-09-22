@@ -7,7 +7,7 @@ function Animation:new(context)
     local anim = setmetatable({}, Animation)
 
     anim.player = nil
-    anim.playerAtk = nil
+    anim.weapon = nil
     
     anim.enemies = {}
     anim.projectiles = {}
@@ -25,7 +25,7 @@ function Animation:add(typeName, opts)
     
     if typeName == "player" then
         self.player = comp
-    elseif typeName == "playerAtk" then
+    elseif typeName == "weapon" then
         self.playerAtk = comp
     elseif typeName == "enemy" then
         table.insert(self.enemies, comp)
@@ -47,7 +47,7 @@ function Animation:update(dt)
     for i = #self.enemies, 1, -1 do
         local enemy = self.enemies[i]
         enemy:update(dt)
-        if enemy.dead then --Refactor potentially since death may not be stored directly on enemy
+        if enemy.dead then
             table.remove(self.enemies, i)
         end
     end
@@ -55,6 +55,12 @@ function Animation:update(dt)
     for projectile in ipairs(self.projectiles) do
         projectile:update(dt)
     end
+end
+
+function Animation:play(animName)
+    self:setAnimation(animName, true)
+    self.loop = false
+    self.playing = true
 end
 
 return Animation

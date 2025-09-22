@@ -11,6 +11,7 @@ gamejam for Callunas birthday
 - Players and Enemies have exposed stats
 - Decrees have functions in their decree table
 - Game state loops through decrees and factors in their functionality
+- Background generator
 
 <br><br>
 

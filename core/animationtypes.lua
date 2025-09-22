@@ -44,6 +44,7 @@ function SpriteAnimator:new(opts)
     spr.loop = opts.loop ~= false
     spr.timer = 0
     spr.playing = true
+    spr.finished = false
 
     return spr
 end
@@ -76,6 +77,15 @@ function SpriteAnimator:setAnimation(name, reset)
     end
 end
 
+function SpriteAnimator:playOnce(anim)
+    self:setAnimation(anim, true)
+    self.loop = false
+    self.playing = true
+    self.finished = false
+    self.currentFrame = 1
+    self.timer = 0
+end
+
 function SpriteAnimator:update(dt)
 
     if not self.playing or not self.frames or #self.frames == 0 then return end
@@ -92,6 +102,7 @@ function SpriteAnimator:update(dt)
             else
                 self.currentFrame = #self.frames
                 self.playing = false
+                self.finished = true
             end
         end
     end

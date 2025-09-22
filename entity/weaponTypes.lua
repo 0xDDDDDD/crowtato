@@ -3,7 +3,7 @@ local sheet_weapons = love.graphics.newImage("assets/img/weapons/claws.png")
 local Weapons = {
     --Claws (Default)
     Claws = {
-        animType = "SpriteAnimator",
+        animType = "spriteAnimator",
         sheet = sheet_weapons,
         frameW = 64,
         frameH = 64,
@@ -11,10 +11,11 @@ local Weapons = {
             swing = {1, 2, 3, 4}
         },
         startAnim = "swing",
-        animSpeed = 0.1,
+        animSpeed = 0.05,
         loop = false,
         damage = 40,
         range = 100,
-        hitArc = math.rad(90)
     }
 }
+
+return Weapons
