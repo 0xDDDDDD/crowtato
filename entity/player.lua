@@ -28,16 +28,29 @@ function Player:new(context, entity, opts, animator)
 
     --Player data
     pl.posX, pl.posY = 300, 300
+    pl.health = 100
     pl.movSpeed = 300
     pl.moving = false
 
+    pl.atkSpeed = 2.0
+    pl.atkRange = 100
+
     --Misc
-    pl.timers = {}
+    pl.timers = {
+        attack = 0.0
+    }
 
     return pl
 end
 
 function Player:update(dt)
+
+    self.timers.attack = self.timers.attack - dt
+
+    if self.timers.attack <= 0 then
+        self.timers.attack = self.atkSpeed
+        self:attack()
+    end
 
     self.posX = self.posX + ((self.context.input.actions.moveX * self.movSpeed) * dt)
     self.posY = self.posY + ((self.context.input.actions.moveY * self.movSpeed) * dt)
@@ -63,6 +76,23 @@ end
 
 function Player:draw()
     love.graphics.draw(self.animator.sheet, self.animator:getQuad(), self.posX, self.posY)
+end
+
+function Player:attack()
+
+    local target, dist = self.entity:nearestEnemy(self.posX, self.posY)
+
+    if not target then
+        return
+    end
+
+    local dx = target.posX - self.posX
+    local dy = target.posY - self.posY
+
+    if (dx*dx + dy*dy) <= self.atkRange * self.atkRange then
+        
+        print("Attacking")
+    end
 end
 
 return Player

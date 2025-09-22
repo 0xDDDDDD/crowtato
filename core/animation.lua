@@ -7,6 +7,7 @@ function Animation:new(context)
     local anim = setmetatable({}, Animation)
 
     anim.player = nil
+    anim.playerAtk = nil
     
     anim.enemies = {}
     anim.projectiles = {}
@@ -24,6 +25,8 @@ function Animation:add(typeName, opts)
     
     if typeName == "player" then
         self.player = comp
+    elseif typeName == "playerAtk" then
+        self.playerAtk = comp
     elseif typeName == "enemy" then
         table.insert(self.enemies, comp)
     elseif typeName == "projectile" then

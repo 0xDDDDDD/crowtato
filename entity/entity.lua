@@ -68,4 +68,23 @@ function Entity:draw()
     end
 end
 
+function Entity:nearestEnemy(x, y)
+    local nearest = nil
+    local nearestDist = math.huge
+
+    for _, enemy in ipairs(self.enemies) do
+        local dx = enemy.posX - x
+        local dy = enemy.posY - y
+
+        local dist = math.sqrt(dx * dx + dy * dy)
+
+        if dist < nearestDist then
+            nearestDist = dist
+            nearest = enemy
+        end
+    end
+
+    return nearest, nearestDist
+end
+
 return Entity
