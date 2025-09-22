@@ -46,3 +46,7 @@ While it's not done well in this project, in future projects I need to learn abo
 ## Order of Operations
 While BODMAS/PEMDAS is undeniably good to know it does nothing for actual readability. always use parenthesis so that there is one consistent style rather than having to switching between an abstract ruleset when it applies and parenthesis when it doesn't.
 <br>
+
+## Only Managers and Modules can access context
+The context service is a convenience that already carries enough risk, too many things accessing it can make problems harder to track down. In the future, only Modules and Managers should have access to context. For example, EnemyManager could use context just fine, but if the enemies stored within need to use context to get their animators from the animation module for example, then instead, the EnemyManager should get the animator via context/Animation, and pass it into Enemy via it's constructor or load() function. Ergo, Manager access the context service, and pass the result to their children.
+<br>

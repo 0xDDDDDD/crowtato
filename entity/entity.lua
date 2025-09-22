@@ -1,5 +1,7 @@
 local Animation = require("core.animation")
 local Player = require("entity.player")
+local Weapon = require("entity.weapon")
+local WTypes = require("entity.weaponTypes")
 local Enemy = require("entity.enemy")
 local ETypes = require("entity.enemyTypes")
 local Spawner = require("systems.spawner")
@@ -25,12 +27,23 @@ function Entity:load()
     self.spawner = Spawner:new(self.context, self)
     self.spawner:load()
     self:addPlayer()
+    self:addWeapon("Claws")
 end
 
 function Entity:addPlayer()
     local anim = self.context.animation:add("player", Player.defaultOpts)
     self.player = Player:new(self.context, self, Player.defaultOpts, anim)
 end
+
+function Entity:addWeapon(weaponType)
+    local opts = WTypes[weaponType]
+    assert(opts, "Unknown weapon type: " .. tostring(weaponType))
+    local anim = self.context.animation:add("weapon", opts)
+    local weapon = Weapon:new(anim, self.player, self, opts)
+    self.weapon = weapon
+    self.player:equip(weapon)
+end
+
 
 function Entity:addEnemy(typeName, overrides)
     local base = ETypes[typeName]
@@ -49,12 +62,13 @@ end
 
 function Entity:update(dt, px, py)
     self.player:update(dt)
+    self.weapon:update(dt)
 
     self.spawner:update(dt)
 
     for i = #self.enemies, 1, -1 do
         local e = self.enemies[i]
-        e:update(dt, self.player.posX, self.player.posY) --TODO: get player position when necessary
+        e:update(dt, self.player.posX, self.player.posY)
         if e.dead then
             table.remove(self.enemies, i)
         end
@@ -65,6 +79,9 @@ function Entity:draw()
     self.player:draw()
     for _, e in ipairs(self.enemies) do
         e:draw(self.player.posX)
+    end
+    if self.weapon then
+        self.weapon:draw()
     end
 end
 

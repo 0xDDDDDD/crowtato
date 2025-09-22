@@ -46,26 +46,12 @@ function Player:new(context, entity, opts, animator)
         attack = 0.0
     }
 
-    pl:equip("Claws")
-
     return pl
 end
 
 function Player:update(dt)
 
-
-    self.timers.attack = math.max(0, self.timers.attack - dt)
-
-    local target, dist = self.entity:nearestEnemy(self.posX, self.posY)
-    if target and dist <= self.atkRange then
-        if self.timers.attack == 0 then
-            self:attack()
-            self.timers.attack = self.atkSpeed
-        end
-    end
-
-    
-
+    --MOVEMENT CODE
     self.posX = self.posX + ((self.context.input.actions.moveX * self.movSpeed) * dt)
     self.posY = self.posY + ((self.context.input.actions.moveY * self.movSpeed) * dt)
 
@@ -85,35 +71,29 @@ function Player:update(dt)
         end
     end
 
+    --SCAN CODE
+    self:scan()
+    
     self.animator:update(dt)
 
-    if self.weaponAnimator then
-        self.weaponAnimator:update(dt)
-    end
 end
 
 function Player:draw()
     love.graphics.draw(self.animator.sheet, self.animator:getQuad(), self.posX, self.posY)
-
-        if self.weaponAnimator and not self.weaponAnimator.finished then
-        love.graphics.draw(
-            self.weaponAnimator.sheet,
-            self.weaponAnimator:getQuad(),
-            self.weaponPosX,
-            self.weaponPosY,
-            self.weaponAnimator.rotation or 0,
-            4, 4,
-            self.weaponAnimator.frameW / 2,
-            self.weaponAnimator.frameH / 2
-        )
-    end
 end
 
-function Player:equip(weaponName)
-    self.weapon = Weapons[weaponName]
-    self.weaponAnimator = self.context.animation:add("weapon", self.weapon)
+function Player:equip(weapon)
+    self.weapon = weapon
+    weapon.player = self
 end
 
+function Player:scan()
+    --based on reach, the player detects if and how many enemies are in the circle of reach.
+end
+
+
+--OBSOLETE, just using as reference now
+--[[
 function Player:attack()
 
     local target, dist = self.entity:nearestEnemy(self.posX, self.posY)
@@ -143,5 +123,6 @@ function Player:attack()
 
     end
 end
+]]--
 
 return Player
