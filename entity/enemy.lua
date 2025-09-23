@@ -14,13 +14,30 @@ function Enemy:new(entity, opts, animator)
     enm.posX, enm.posY = opts.posX or 0, opts.posY or 0
     enm.health = opts.health or 100
     enm.movSpeed = opts.movSpeed or 200
+    enm.damage = opts.damage or 10
     enm.stun = false
     enm.dead = false
+
+    enm.base = {
+        movSpeed = opts.movSpeed or 200,
+        damage = opts.damage or 10,
+    }
+
+    enm.modifiers = {
+        movSpeed = 0,
+        damage = 0
+    }
 
     --Misc
     enm.timers = {}
 
+    enm:calculate()
     return enm
+end
+
+function Enemy:calculate()
+    self.movSpeed = self.base.movSpeed + self.modifiers.movSpeed
+    self.damage = self.base.damage + self.modifiers.damage
 end
 
 function Enemy:update(dt, px, py)

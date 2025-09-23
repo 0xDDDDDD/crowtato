@@ -17,6 +17,7 @@ local EnemyTypes = {
         posX = 0,
         posY = 0,
         movSpeed = 220,
+        damage = 10,
         behaviors = {
             "chase"
         }
@@ -35,7 +36,8 @@ local EnemyTypes = {
         loop = true,
         posX = 0,
         posY = 0,
-        movSpeed = 300,
+        movSpeed = 280,
+        damage = 20,
         behaviors = {
             "chase",
             "throw"

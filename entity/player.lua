@@ -42,13 +42,31 @@ function Player:new(context, entity, opts, animator)
     pl.atkSpeed = 0.5
     pl.atkRange = 150
 
+    pl.base = {
+        movSpeed = 300,
+        atkSpeed = 0.5,
+        atkRange = 150
+    }
+
+    pl.modifiers = {
+        movSpeed = 0,
+        atkSpeed = 0,
+        atkRange = 0
+    }
+
     --Misc
     pl.timers = {
         attack = 0.0,
         takeHit = 0.0
     }
-
+    pl:calculate()
     return pl
+end
+
+function Player:calculate()
+    self.movSpeed = self.base.movSpeed + self.modifiers.movSpeed
+    self.atkSpeed = self.base.atkSpeed + self.modifiers.atkSpeed
+    self.atkRange = self.base.atkRange + self.modifiers.atkRange
 end
 
 function Player:update(dt)

@@ -39,7 +39,6 @@ function Weapon:draw()
 end
 
 function Weapon:attack(enmPosX, enmPosY, enmDist)
-    print("Attacking...")
 
     local reach = self.player.atkRange
 
