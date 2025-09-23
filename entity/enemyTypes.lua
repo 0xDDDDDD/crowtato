@@ -16,7 +16,7 @@ local EnemyTypes = {
         loop = true,
         posX = 0,
         posY = 0,
-        movSpeed = 200,
+        movSpeed = 220,
         behaviors = {
             "chase"
         }

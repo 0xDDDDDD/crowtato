@@ -31,4 +31,12 @@ function Audio:playMusic(path, volume)
     self.musicSrc:play()
 end
 
+
+function Audio:playSFX(path, volume)
+    local sfx = love.audio.newSource(path, "static")
+    sfx:setVolume(volume or 1.0)
+    sfx:play()
+    table.insert(self.sfxSrc, sfx)
+end
+
 return Audio

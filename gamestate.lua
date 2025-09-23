@@ -23,6 +23,8 @@ function GameState:new(context)
     }
     gs.state.decrees = Decrees
 
+    gs.mode = "game"
+
     gs.bindings = {
         state = gs.state
     }
@@ -52,11 +54,25 @@ function GameState:loadUI()
     end
 end
 
+function GameState:startDecreeSelection(opts)
+    self.mode = "decree_selection"
+    pick_decrees(opts)
+end
+
+function GameState:endDecreeSelection()
+    self.mode = "game"
+end
+
 function GameState:update(dt)
 
     context.input:update()
     context.ui:update(dt)
-    self.entity:update(dt)
+
+    if self.mode == "game" then
+        self.entity:update(dt)
+    else
+        --pass
+    end
 
 end
 
@@ -77,20 +93,25 @@ function love.keypressed(key) --TODO: needs to go to input module
     elseif key == "h" and context.game.state.health >= 10 then
         context.game.state.health = context.game.state.health - 10
     elseif key == "t" then
-        pick_decrees(get_random_decrees(context))
+        context.game:startDecreeSelection(get_random_decrees(context))
     elseif key == "p" then
         context.game.state.wave = context.game.state.wave + 1
     end
 end
 
-function love.mousepressed(x, y, button, istouch, presses) --TODO: needs to go to input module
+function love.mousepressed(x, y, button, istouch, presses)
     if button == 1 and context.ui:get("decreepicker").visible then
         local dp = context.ui:get("decreepicker")
-        table.insert(context.game.state.inventory, dp:select(x, y))
+        local selected = dp:select(x, y)
+
+        if selected then
+            table.insert(context.game.state.inventory, selected)
+            context.game:endDecreeSelection()
+        end
     end
 end
 
-function pick_decrees(options) --TODO: This could potentially stay here. Needs consideration
+function pick_decrees(options)
     local dp = context.ui:get("decreepicker")
     dp:show(options)
 end

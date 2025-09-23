@@ -79,8 +79,8 @@ function Player:update(dt)
 
     local enmPosX, enmPosY, enmDist = self:scan()
     if enmPosX then
-        print(self.timers.attack)
         if self.timers.attack <= 0 then
+            self.context.audio:playSFX("assets/audio/atk.mp3", 1.0)
             self.weapon:attack(enmPosX, enmPosY, enmDist)
             self.timers.attack = self.atkSpeed
         end
