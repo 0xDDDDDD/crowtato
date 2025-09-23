@@ -87,21 +87,25 @@ end
 
 function Entity:nearestEnemy(x, y)
     local nearest = nil
-    local nearestDist = math.huge
+    local nearestDistSq = math.huge
 
     for _, enemy in ipairs(self.enemies) do
         local dx = enemy.posX - x
         local dy = enemy.posY - y
 
-        local dist = math.sqrt(dx * dx + dy * dy)
+        local distSq = dx * dx + dy * dy
 
-        if dist < nearestDist then
-            nearestDist = dist
+        if distSq < nearestDistSq then
+            nearestDistSq = distSq
             nearest = enemy
         end
     end
 
-    return nearest, nearestDist
+    if nearest then
+        return nearest, math.sqrt(nearestDistSq)
+    else
+        return nil, nil
+    end
 end
 
 return Entity

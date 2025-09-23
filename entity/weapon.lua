@@ -35,14 +35,20 @@ function Weapon:draw()
     end
 end
 
---Needs rigorous testing...
-function Weapon:attackFrom(playerX, playerY, targetX, targetY)
-    local reach = self.opts.range or 0
-    local angle = math.atan2(targetY - playerY, targetX - playerX) + (self.opts.rotationOffset or 0)
-    self.rotation = angle
-    self.posX = playerX + math.cos(angle) * reach
-    self.posY = playerY + math.sin(angle) * reach
-    self.animator.rotation = angle
+function Weapon:attack(enmPosX, enmPosY, enmDist)
+    print("Attacking...")
+
+    local reach = self.player.atkRange
+
+    local logicAngle = math.atan2(enmPosY - self.player.posY, enmPosX - self.player.posX)
+
+    local visualAngle = logicAngle + (self.opts.rotationOffset or 0)
+
+    self.posX = self.player.posX + math.cos(logicAngle) * reach
+    self.posY = self.player.posY + math.sin(logicAngle) * reach
+
+    self.rotation = visualAngle
+    self.animator.rotation = visualAngle
     self.animator:playOnce("swing")
 end
 

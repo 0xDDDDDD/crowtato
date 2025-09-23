@@ -16,7 +16,7 @@ local Weapons = {
         damage = 40,
         range = 100,
         rotationOffset = math.rad(90),
-        originX = 10,
+        originX = 32,
         originY = 32
     }
 }

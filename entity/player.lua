@@ -72,8 +72,15 @@ function Player:update(dt)
     end
 
     --SCAN CODE
-    self:scan()
-    
+    self.timers.attack = math.max(0, self.timers.attack - dt)
+    if self.timers.attack <= 0 then
+        local enmPosX, enmPosY, enmDist = self:scan()
+        if enmPosX then
+            self.weapon:attack(enmPosX, enmPosY, enmDist)
+        end
+        self.timers.attack = self.atkSpeed
+    end
+
     self.animator:update(dt)
 
 end
@@ -87,42 +94,15 @@ function Player:equip(weapon)
     weapon.player = self
 end
 
-function Player:scan()
-    --based on reach, the player detects if and how many enemies are in the circle of reach.
-end
+function Player:scan() --This could be done inline, but wrapping it in function for adding new features in future
+    local enemy, dist = self.entity:nearestEnemy(self.posX, self.posY)
 
-
---OBSOLETE, just using as reference now
---[[
-function Player:attack()
-
-    local target, dist = self.entity:nearestEnemy(self.posX, self.posY)
-
-    if not target then
-        return
-    end
-
-    local dx = target.posX - self.posX
-    local dy = target.posY - self.posY
-
-    if (dx*dx + dy*dy) <= self.atkRange * self.atkRange then
-        local angle = math.atan2(dy, dx)
-
-
-        if self.weaponAnimator then
-            self.weaponAnimator.rotation = angle + 90
-            self.weaponPosX = self.posX + math.cos(angle) * self.atkRange
-            self.weaponPosY = self.posY + math.sin(angle) * self.atkRange
-        end
-
-        if self.weaponAnimator then
-            self.weaponAnimator:playOnce("swing")
-        end
-
-        self.attacking = true
-
+    if enemy and dist <= self.atkRange then
+        return enemy.posX, enemy.posY, dist
+    else
+        return nil
     end
 end
-]]--
+
 
 return Player
