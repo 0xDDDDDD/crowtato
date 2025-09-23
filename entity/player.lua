@@ -33,6 +33,7 @@ function Player:new(context, entity, opts, animator)
     pl.health = 100
     pl.movSpeed = 300
     pl.moving = false
+    pl.hitboxSize = 20
 
     pl.weapon = Weapons.Claws
     pl.weaponPosX = nil
@@ -43,7 +44,8 @@ function Player:new(context, entity, opts, animator)
 
     --Misc
     pl.timers = {
-        attack = 0.0
+        attack = 0.0,
+        takeHit = 0.0
     }
 
     return pl
@@ -73,12 +75,20 @@ function Player:update(dt)
 
     --SCAN CODE
     self.timers.attack = math.max(0, self.timers.attack - dt)
-    if self.timers.attack <= 0 then
-        local enmPosX, enmPosY, enmDist = self:scan()
-        if enmPosX then
+    self.timers.takeHit = math.max(0, self.timers.takeHit - dt)
+
+    local enmPosX, enmPosY, enmDist = self:scan()
+    if enmPosX then
+        print(self.timers.attack)
+        if self.timers.attack <= 0 then
             self.weapon:attack(enmPosX, enmPosY, enmDist)
+            self.timers.attack = self.atkSpeed
         end
-        self.timers.attack = self.atkSpeed
+
+        if self.timers.takeHit <= 0 and enmDist <= self.hitboxSize then
+            self.health = self.health - 10
+            self.timers.takeHit = 1.0
+        end
     end
 
     self.animator:update(dt)

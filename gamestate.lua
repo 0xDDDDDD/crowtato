@@ -32,6 +32,8 @@ end
 
 function GameState:load()
     self.entity = Entity:new(self.context)
+    
+    self.context.audio:playMusic("assets/audio/crowtato.mp3")
 
     --load the player in
     self.entity:load()
