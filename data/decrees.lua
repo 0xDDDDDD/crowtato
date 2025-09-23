@@ -115,7 +115,7 @@ local decrees = {
             id = 15,
             name = "Wingspan",
             tooltip = "Attack reach is doubled but lost 20% attack speed",
-            icon = "assets/img/decrees/15_Wingspan.png"
+            icon = "assets/img/decrees/15_wingspan.png"
         },
         {
             id = 16,
