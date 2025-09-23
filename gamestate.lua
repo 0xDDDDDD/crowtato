@@ -105,8 +105,21 @@ function love.mousepressed(x, y, button, istouch, presses)
         local selected = dp:select(x, y)
 
         if selected then
-            table.insert(context.game.state.inventory, selected)
-            context.game:endDecreeSelection()
+            -- Find the full decree object by matching name or id
+            local decreeObj = nil
+            for _, d in ipairs(context.game.state.decrees) do
+                if d.name == selected.name then  -- or d.id == selected.id if it exists
+                    decreeObj = d
+                    break
+                end
+            end
+
+            if decreeObj then
+                table.insert(context.game.state.inventory, decreeObj)
+                context.game:endDecreeSelection()
+            else
+                print("Warning: selected decree not found in master list:", selected.name)
+            end
         end
     end
 end
@@ -116,23 +129,33 @@ function pick_decrees(options)
     dp:show(options)
 end
 
-function get_random_decrees(context)
+local function hasDecree(inventory, id)
+    for _, d in ipairs(inventory) do
+        if d.id == id then
+            return true
+        end
+    end
+    return false
+end
 
+function get_random_decrees(context)
     local allDecrees = context.game.state.decrees
     local inventory  = context.game.state.inventory
+
+    print("Inventory contents before filtering:")
+    for _, d in ipairs(context.game.state.inventory) do
+        print("id:", d.id, "type:", type(d.id), "name:", d.name)
+    end
 
 
     local filtered = {}
     for _, decree in ipairs(allDecrees) do
-        if decree.multi == true then
+        if decree.multi == true or not hasDecree(inventory, decree.id) then
             table.insert(filtered, decree)
-        else
-            if not inventory[decree.id] then
-                table.insert(filtered, decree)
-            end
         end
     end
 
+    -- shuffle
     for i = #filtered, 2, -1 do
         local j = math.random(i)
         filtered[i], filtered[j] = filtered[j], filtered[i]
