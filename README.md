@@ -3,8 +3,8 @@ gamejam for Callunas birthday
 
 
 ## Final target
-- Attack animation plays depending on nearest enemy direction
-- Attacks hit enemies, reduce their health, maybe impulse them backwards if time allows?
+- ~~Attack animation plays depending on nearest enemy direction~~
+- ~~Attacks hit enemies, reduce their health, maybe impulse them backwards if time allows?~~
 - Enemy collision check to see if should hurt player
 - Play music on loop
 - Game state has decree selection phase

@@ -1,3 +1,5 @@
+local Shapes = require("types.shapes")
+
 local Weapon = {}
 Weapon.__index = Weapon
 
@@ -13,6 +15,7 @@ function Weapon:new(animator, player, entity, opts)
     w.opts = opts
     w.posX, w.posY = 0, 0
     w.rotation = 0
+    w.scale = (w.player.atkRange / 100) * w.opts.scale
 
     return w
 end
@@ -28,7 +31,7 @@ function Weapon:draw()
             self.animator:getQuad(),
             self.posX, self.posY,
             self.rotation,
-            4, 4,
+            self.scale, self.scale,
             self.opts.originX or self.opts.frameW / 2,
             self.opts.originY or self.opts.frameH / 2
         )
@@ -40,16 +43,25 @@ function Weapon:attack(enmPosX, enmPosY, enmDist)
 
     local reach = self.player.atkRange
 
-    local logicAngle = math.atan2(enmPosY - self.player.posY, enmPosX - self.player.posX)
+    local logicAngle = math.atan2(enmPosY - self.player.posY,
+                                  enmPosX - self.player.posX)
 
     local visualAngle = logicAngle + (self.opts.rotationOffset or 0)
 
     self.posX = self.player.posX + math.cos(logicAngle) * reach
     self.posY = self.player.posY + math.sin(logicAngle) * reach
-
     self.rotation = visualAngle
     self.animator.rotation = visualAngle
-    self.animator:playOnce("swing")
+    self.animator:playOnce("atk")
+
+    local thickness = self.opts.hitThickness or 20
+    local cx = self.player.posX + math.cos(logicAngle) * (reach / 2)
+    local cy = self.player.posY + math.sin(logicAngle) * (reach / 2)
+
+    local hitShape = Shapes.obb(cx, cy, reach / 2, thickness / 2, logicAngle)
+    hitShape.damage = self.opts.damage
+
+    self.player.entity:processHit(hitShape)
 end
 
 return Weapon

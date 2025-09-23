@@ -39,7 +39,7 @@ function Player:new(context, entity, opts, animator)
     pl.weaponPosY = nil
     pl.attacking = false
     pl.atkSpeed = 0.5
-    pl.atkRange = 100
+    pl.atkRange = 150
 
     --Misc
     pl.timers = {

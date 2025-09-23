@@ -108,4 +108,17 @@ function Entity:nearestEnemy(x, y)
     end
 end
 
+function Entity:processHit(data)
+    for i = #self.enemies, 1, -1 do
+        local enemy = self.enemies[i]
+
+        if data:containsPoint(enemy.posX, enemy.posY) then
+            enemy.health = enemy.health - data.damage
+            if enemy.health <= 0 then
+                table.remove(self.enemies, i)
+            end
+        end
+    end
+end
+
 return Entity
