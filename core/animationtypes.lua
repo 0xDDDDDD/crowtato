@@ -1,24 +1,5 @@
-
 -- Animation Types
 AnimTypes = {}
-
-
--- ==== STATE MACHINE ==== --
-local StateMachine = {}
-StateMachine.__index = StateMachine
-
-function StateMachine:new(opts)
-end
-
-function StateMachine:update(dt)
-end
-
-function StateMachine:setState(state)
-end
-
-function StateMachine:draw()
-end
-
 
 -- ==== Sprite Animator ==== --
 local SpriteAnimator = {}
@@ -42,6 +23,7 @@ function SpriteAnimator:new(opts)
     --Settings/Data
     spr.animSpeed = opts.animSpeed or 0.1
     spr.loop = opts.loop ~= false
+    spr.loopDelay = opts.loopDelay or 0.0
     spr.timer = 0
     spr.playing = true
     spr.finished = false
@@ -119,35 +101,54 @@ local TweenQueue = {}
 TweenQueue.__index = TweenQueue
 
 function TweenQueue:new(opts)
+    return setmetatable({ tweens = {}}, TweenQueue)
+end
+
+function TweenQueue:add(tween)
+    table.insert(self.tweens, tween)
 end
 
 function TweenQueue:update(dt)
+    for i = #self.tweens, 1, -1 do
+        local tw = self.tweens[i]
+        tw:update(dt)
+        if tw.finished then table.remove(self.tweens, i) end
+    end
 end
-
-function TweenQueue:draw()
-end
-
 
 -- === Tween ==== --
 
 local Tween = {}
 Tween.__index = Tween
 
-function Tween:new(target, key, from, to, easing, elapsed)
+function Tween:new(target, key, from, to, duration, easing, elapsed)
     tw = setmetatable({}, Tween)
 
     tw.target = target
     tw.key = key
     tw.from = from
     tw.to = to
-    tw.easing = easing
-    tw.elapsed = elapsed
+    tw.duration = duration
+    tw.easing = easing or function(t) return t end
+    tw.elapsed = elapsed or 0
+    tw.finished = false
 
     return tw
 end
 
+function Tween:update(dt)
+    if self.finished then return end
+    self.elapsed = self.elapsed + dt
 
-AnimTypes.stateMachine = StateMachine
+    local t = math.min(self.elapsed / self.duration, 1)
+    local eased = self.easing(t)
+    self.target[self.key] = self.from + (self.to - self.from) * eased
+    
+    if t >= 1 then
+        self.finished = true
+    end
+end
+
 AnimTypes.spriteAnimator = SpriteAnimator
 AnimTypes.tweenQueue = TweenQueue
 AnimTypes.tween = Tween
