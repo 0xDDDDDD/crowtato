@@ -6,61 +6,32 @@ Animation.__index = Animation
 function Animation:new(context)
     local anim = setmetatable({}, Animation)
 
-    anim.player = nil
-    anim.weapon = nil
-    
-    anim.enemies = {}
-    anim.projectiles = {}
+    anim.context = context
 
-    anim.misc = {}
+    anim.hosted = {}
 
     return anim
 end
 
-function Animation:add(typeName, opts)
+function Animation:create(opts)
     local class = AnimTypes[opts.animType]
-    if not class then error("Unknown type: " .. tostring(typeName)) end
-
-    local comp = class:new(opts)
-    
-    if typeName == "player" then
-        self.player = comp
-    elseif typeName == "weapon" then
-        self.playerAtk = comp
-    elseif typeName == "enemy" then
-        table.insert(self.enemies, comp)
-    elseif typeName == "projectile" then
-        table.insert(self.projectiles, comp)
-    else
-        table.insert(self.misc, comp)
-    end
-
-    return comp
+    assert(class, "Unknown animType: " .. tostring(opts.animType))
+    return class:new(opts)
 end
 
+function Animation:createHosted(opts)
+    local anim = self:create(opts)
+    table.insert(self.hosted, anim)
+end
 
 function Animation:update(dt)
-    if self.player then
-        self.player:update(dt)
-    end
-
-    for i = #self.enemies, 1, -1 do
-        local enemy = self.enemies[i]
-        enemy:update(dt)
-        if enemy.dead then
-            table.remove(self.enemies, i)
+    for i = #self.hosted, 1, -1 do
+        local anim = self.hosted[i]
+        anim:update(dt)
+        if anim.finished then
+            table.remove(self.hosted, i)
         end
     end
-
-    for projectile in ipairs(self.projectiles) do
-        projectile:update(dt)
-    end
-end
-
-function Animation:play(animName)
-    self:setAnimation(animName, true)
-    self.loop = false
-    self.playing = true
 end
 
 return Animation
