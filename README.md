@@ -50,3 +50,8 @@ While BODMAS/PEMDAS is undeniably good to know it does nothing for actual readab
 ## Only Managers and Modules can access context
 The context service is a convenience that already carries enough risk, too many things accessing it can make problems harder to track down. In the future, only Modules and Managers should have access to context. For example, EnemyManager could use context just fine, but if the enemies stored within need to use context to get their animators from the animation module for example, then instead, the EnemyManager should get the animator via context/Animation, and pass it into Enemy via it's constructor or load() function. Ergo, Manager access the context service, and pass the result to their children.
 <br>
+
+## Manifest of intent
+When creating "Class"-like tables, always create nil fields (or "slots") even if the field can't be given a value in the constructor so that the constructor itself can still be used as a manifest to show the general shape of the class.
+<br>
+

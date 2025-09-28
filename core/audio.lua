@@ -22,7 +22,7 @@ function Audio:new(context)
     au.activeMusicIndex = nil
     au.activeMusic = nil
     au.activeSFX = {}
-
+    print("Audio module created\n")
     return au
 end
 
