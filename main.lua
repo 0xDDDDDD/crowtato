@@ -1,12 +1,12 @@
 Context = require("context")
-Player = require("entity.player")
+Player = require("player.player")
 
 --TEST SESSION
 
 local player
 
 function love.load()
-
+    player = Player:new(Context, Player.defaultOpts)
 end
 
 function love.keypressed(key)
