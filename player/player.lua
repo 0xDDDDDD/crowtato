@@ -75,7 +75,7 @@ function Player:load(state, entity, weapon)
     self.entity = entity
     self.weapon = weapon
 
-    self.animator = self.context.animation:new(self.opts.animator)
+    self.animator = self.context.animation:create(self.opts.animator)
 end
 
 
@@ -100,6 +100,7 @@ end
 
 
 function Player:draw()
+
     love.graphics.draw(
     self.animator.sheet,
     self.animator:getQuad(),
