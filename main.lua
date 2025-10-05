@@ -7,18 +7,17 @@ local player
 
 function love.load()
     player = Player:new(Context, Player.defaultOpts)
+    player:load()
 end
 
 function love.keypressed(key)
-    if key == "l" then
-    end
 end
 
 function love.update(dt)
-
+    player:update(dt)
 end
 
 
 function love.draw()
-
+    player:draw()
 end

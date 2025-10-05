@@ -46,10 +46,16 @@ function Player:new(context, opts)
         atkRange = opts.data.atkRange or 150
     }
 
-    pl.modifiers = {
+    pl.modifiersFlat = {
         movSpeed = 0,
         atkSpeed = 0,
         atkRange = 0
+    }
+
+    pl.modifiersMult = {
+        movSpeed = 1,
+        atkSpeed = 1,
+        atkRange = 1
     }
 
     pl.decreeBehaviour = {
@@ -65,27 +71,41 @@ end
 
 function Player:load(state, entity, weapon)
     self.state = state
-    self.state = entity
-    self.state = weapon
-    self.animator = self.context.animation:new(self.opts)
+    self.entity = entity
+    self.weapon = weapon
+    self.animator = self.context.animation:new(self.opts.animator)
 end
 
 
 function Player:calculate()
-    self.movSpeed = self.base.movSpeed + self.modifiers.movSpeed
-    self.atkSpeed = self.base.atkSpeed + self.modifiers.atkSpeed
-    self.atkRange = self.base.atkRange + self.modifiers.atkRange
+    self.movSpeed = self.base.movSpeed + self.modifiersFlat.movSpeed
+    self.atkSpeed = self.base.atkSpeed + self.modifiersFlat.atkSpeed
+    self.atkRange = self.base.atkRange + self.modifiersFlat.atkRange
+
+    self.movSpeed = self.movSpeed * self.modifiersMult.movSpeed
+    self.atkSpeed = self.atkSpeed * self.modifiersMult.atkSpeed
+    self.atkRange = self.atkRange * self.modifiersMult.atkRange
 end
 
 
 function Player:update(dt)
+
+    self.timers.tick = self.timers.tick + dt
+    self.timers.attack = math.max(0, self.timers.attack - dt)
 
     self.animator:update(dt)
 end
 
 
 function Player:draw()
-    love.graphics.draw(self.animator.sheet, self.animator:getQuad(), self.posX, self.posY)
+    love.graphics.draw(
+    self.animator.sheet,
+    self.animator:getQuad(),
+    self.posX, self.posY,
+    0, 1, 1,
+    self.opts.animator.frameW * 0.5,
+    self.opts.animator.frameH * 0.5
+)
 end
 
 
@@ -116,7 +136,7 @@ Player.defaultOpts = {
         perFrame = {},
         perTick = {},
         onHit = {},
-        onATK = {}
+        onAtk = {}
     }
 }
 
