@@ -1,5 +1,6 @@
-local playerSprite = love.graphics.newImage("assets/img/player/player_sheet.png")
+--Crowtato v0.5
 
+local playerSprite = love.graphics.newImage("assets/img/player/player_sheet.png")
 
 local Player = {}
 Player.__index = Player
@@ -73,6 +74,7 @@ function Player:load(state, entity, weapon)
     self.state = state
     self.entity = entity
     self.weapon = weapon
+
     self.animator = self.context.animation:new(self.opts.animator)
 end
 

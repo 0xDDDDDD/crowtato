@@ -1,4 +1,5 @@
--- Animation Types
+--Crowtato v0.5
+
 AnimTypes = {}
 
 -- ==== Sprite Animator ==== --
@@ -9,29 +10,29 @@ function SpriteAnimator:new(opts)
     local spr = setmetatable({}, SpriteAnimator)
 
     --Sprite Sheet
-    spr.sheet = opts.sheet
-    spr.frameW = opts.frameW
-    spr.frameH = opts.frameH
-    spr.quads = spr:sliceSheet()
+    spr.sheet           = opts.sheet
+    spr.frameW          = opts.frameW
+    spr.frameH          = opts.frameH
+    spr.quads           = spr:_sliceSheet()
 
     --Animation
-    spr.anims = opts.anims or {default = {1}}
-    spr.currentAnim = opts.startAnim or next(spr.anims)
-    spr.frames = spr.anims[spr.currentAnim]
-    spr.currentFrame = 1
+    spr.anims           = opts.anims or {default = {1}}
+    spr.currentAnim     = opts.startAnim or next(spr.anims)
+    spr.frames          = spr.anims[spr.currentAnim]
+    spr.currentFrame    = 1
 
     --Settings/Data
-    spr.animSpeed = opts.animSpeed or 0.1
-    spr.loop = opts.loop ~= false
-    spr.loopDelay = opts.loopDelay or 0.0
-    spr.timer = 0
-    spr.playing = true
-    spr.finished = false
+    spr.animSpeed       = opts.animSpeed or 0.1
+    spr.loop            = opts.loop ~= false
+    spr.loopDelay       = opts.loopDelay or 0.0
+    spr.timer           = 0
+    spr.playing         = true
+    spr.finished        = false
 
     return spr
 end
 
-function SpriteAnimator:sliceSheet()
+function SpriteAnimator:_sliceSheet()
     local quads = {}
     local sheetW, sheetH = self.sheet:getDimensions()
 
@@ -45,17 +46,14 @@ end
 
 function SpriteAnimator:setAnimation(name, reset)
 
-    if self.anims[name] then
-        if name ~= self.currentAnim then reset = true end
+    assert(self.anims[name], ("Animation '%s' not found"):format(name))
 
+    if name ~= self.currentAnim or reset then
         self.currentAnim = name
         self.frames = self.anims[name]
-
-        if reset then
-            self.currentFrame = 1
-            self.timer = 0
-            self.playing = true
-        end
+        self.currentFrame = 1
+        self.timer = 0
+        self.playing = true
     end
 end
 
@@ -70,7 +68,7 @@ end
 
 function SpriteAnimator:update(dt)
 
-    if not self.playing or not self.frames or #self.frames == 0 then return end
+    if not self.playing then return end
 
     self.timer = self.timer + dt
 
@@ -81,6 +79,7 @@ function SpriteAnimator:update(dt)
         if self.currentFrame > #self.frames then
             if self.loop then
                 self.currentFrame = 1
+                self.finished = false
             else
                 self.currentFrame = #self.frames
                 self.playing = false
@@ -91,7 +90,8 @@ function SpriteAnimator:update(dt)
 end
 
 function SpriteAnimator:getQuad()
-    return self.quads[self.frames[self.currentFrame]]
+    local frameIndex = self.frames[self.currentFrame]
+    return frameIndex and self.quads[frameIndex] or nil
 end
 
 
