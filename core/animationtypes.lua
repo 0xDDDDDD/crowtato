@@ -27,6 +27,7 @@ function SpriteAnimator:new(opts)
     spr.loopDelay       = opts.loopDelay or 0.0
     spr.timer           = 0
     spr.playing         = true
+    spr.paused          = false
     spr.finished        = false
 
     return spr
